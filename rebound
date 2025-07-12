@@ -200,24 +200,7 @@ ItemName.PrimaryPart.Close:Destroy()
 ItemName.PrimaryPart.Footsteps:Destroy()
 
 ItemName.PrimaryPart.Idle:Destroy()
-    local spawn = Instance.new("Sound")
-                        function GitAud(soundgit, filename)
-				local FileName = filename
-				writefile(FileName..".mp3", game:HttpGet(soundgit))
-				return (getcustomasset or getsynasset)(FileName..".mp3")
-			end
 
-			function CustomGitSound(soundlink, vol, filename)
-				local sound = Instance.new("Sound")
-				sound.SoundId = GitAud(soundlink, filename)
-				sound.Parent = workspace
-				sound.Name = "Crashgame"
-				sound.Volume = 2
-				sound:Play()
-			end
-
-	CustomGitSound("https://github.com/eoyoustme2/-i-lost-my-account-is-eoyoustme-/blob/main/Record_2025-07-12-13-45-43.mp3?raw=true", 1, "Crashgame")
-wait(5.3)
     local move = GetGitSound("https://github.com/check78/worldcuuuup/blob/main/DoomBegin.mp3?raw=true","Reboun")
     move.Parent = entityModel.PrimaryPart
     move.Name = "ReboundMoving"
