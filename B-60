@@ -32,7 +32,7 @@ local entity = spawner.Create({
         Reversed = false
     },
     Rebounding = {
-        Enabled = true,
+        Enabled = false,
         Type = "Ambush", -- "Blitz"
         Min = 4,
         Max = 4,
@@ -237,7 +237,7 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
 		task.spawn(function()
 			while not stopEffects do
 				face.Rotation = 10
-				face.Image = "rbxassetid://111065538318254"
+				face.Image = "rbxassetid://121035342525244"
 				task.wait(0.0589)
 				face.Rotation = -10
 				task.wait(0.0589)
