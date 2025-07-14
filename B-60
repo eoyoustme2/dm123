@@ -32,7 +32,7 @@ local entity = spawner.Create({
         Reversed = false
     },
     Rebounding = {
-        Enabled = false,
+        Enabled = true,
         Type = "Ambush", -- "Blitz"
         Min = 4,
         Max = 4,
@@ -117,7 +117,7 @@ end)
 
 entity:SetCallback("OnDespawning", function()
     print("Entity is despawning")
-wait(0.4)
+wait(2)
 game.Lighting.MainColorCorrection.TintColor = Color3.fromRGB(0, 0, 255)
 game.Lighting.MainColorCorrection.Contrast = 0.1
 local tween = game:GetService("TweenService")
@@ -125,10 +125,7 @@ tween:Create(game.Lighting.MainColorCorrection, TweenInfo.new(2.5), {Contrast = 
 local TweenService = game:GetService("TweenService")
 local TW = TweenService:Create(game.Lighting.MainColorCorrection, TweenInfo.new(5),{TintColor = Color3.fromRGB(255, 255, 255)})
 TW:Play()
-end)
 
-entity:SetCallback("OnDespawned", function()
-    print("Entity has despawned")
 ---====== Load achievement giver ======---
 local achievementGiver = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Custom%20Achievements/Source.lua"))()
 
@@ -139,6 +136,10 @@ achievementGiver({
     Reason = "Encounter B-60",
     Image = "rbxassetid://106971831658765"
 })
+end)
+
+entity:SetCallback("OnDespawned", function()
+    print("Entity has despawned")
 end)
 
 entity:SetCallback("OnDamagePlayer", function(newHealth)
