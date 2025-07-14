@@ -7,7 +7,7 @@ local spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/Regul
 local entity = spawner.Create({
     Entity = {
         Name = "B-60",
-        Asset = "rbxassetid://118605282221635",
+        Asset = "rbxassetid://82490794768053",
         HeightOffset = 4
     },
     Lights = {
@@ -28,15 +28,15 @@ local entity = spawner.Create({
     },
     Movement = {
         Speed = 525,
-        Delay = 12,
+        Delay = 7
         Reversed = false
     },
     Rebounding = {
         Enabled = false,
         Type = "Ambush", -- "Blitz"
-        Min = 13,
-        Max = 13,
-        Delay = 0.4
+        Min = 4,
+        Max = 4,
+        Delay = 0.2
     },
     Damage = {
         Enabled = true,
@@ -237,7 +237,7 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
 		task.spawn(function()
 			while not stopEffects do
 				face.Rotation = 10
-				face.Image = "rbxassetid://106971831658765"
+				face.Image = "rbxassetid://111065538318254"
 				task.wait(0.0589)
 				face.Rotation = -10
 				task.wait(0.0589)
