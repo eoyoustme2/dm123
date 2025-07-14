@@ -117,7 +117,7 @@ end)
 
 entity:SetCallback("OnDespawning", function()
     print("Entity is despawning")
-wait(2)
+wait(3)
 game.Lighting.MainColorCorrection.TintColor = Color3.fromRGB(0, 0, 255)
 game.Lighting.MainColorCorrection.Contrast = 0.1
 local tween = game:GetService("TweenService")
