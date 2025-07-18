@@ -39,7 +39,7 @@ scareImage.ImageTransparency = 0.7
 scareImage.Parent = scareGUI
 
 -- Chờ 1 giây để hiệu ứng GUI ban đầu
-task.wait(5)
+task.wait(1)
 scareGUI:Destroy() -- Hủy GUI sau 1 giây
 
 -- Biến để theo dõi trạng thái di chuyển và kết nối sự kiện
@@ -173,7 +173,7 @@ scareImage.ImageTransparency = 0.6
 scareImage.Parent = scareGUI
 
 -- Hiển thị GUI trong 1 giây rồi hủy
-task.wait(5)
+task.wait(1)
 scareGUI:Destroy()
 
 -- Hàm kích hoạt hiệu ứng đáng sợ
