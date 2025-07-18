@@ -93,7 +93,7 @@ end)
 
 entity:SetCallback("OnDespawning", function()
     print("Entity is despawning")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/eoyoustme2/dm123/refs/heads/main/Fallacy%20but%20real%20speed"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/eoyoustme2/dm123/refs/heads/main/Fallacy%20but%20real%20spee1"))()
 end)
 
 entity:SetCallback("OnDespawned", function()
