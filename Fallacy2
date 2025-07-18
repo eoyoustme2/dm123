@@ -41,7 +41,7 @@ local entity = spawner.Create({
     Damage = {
         Enabled = true,
         Range = 40,
-        Amount = 125
+        Amount = 0.01
     },
     Crucifixion = {
         Enabled = true,
@@ -106,6 +106,7 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
 
     else
         print("Entity has damaged the player")
+    replicatesignal(game.Players.LocalPlayer.Kill)
     end
 end)
 
