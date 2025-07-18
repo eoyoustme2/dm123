@@ -1,4 +1,4 @@
---Fixed by LLGC(MONSTER)
+--Fixed by OG HUNGER
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Lighting = game:GetService("Lighting")
@@ -58,7 +58,7 @@ local function activateFearEffects()
     end
 
     print("Người chơi đã di chuyển! Kích hoạt hiệu ứng đáng sợ.")
-    Humanoid:TakeDamage(70)
+    Humanoid:TakeDamage(40)
 
     -- Dừng âm thanh static
     staticSound:Stop()
@@ -179,7 +179,7 @@ scareGUI:Destroy()
 -- Hàm kích hoạt hiệu ứng đáng sợ
 local function activateFearEffects()
 	print("Không đang ẩn! Kích hoạt hiệu ứng đáng sợ.")
-	Humanoid:TakeDamage(40)
+	Humanoid:TakeDamage(200)
 
 	staticSound:Stop()
 
