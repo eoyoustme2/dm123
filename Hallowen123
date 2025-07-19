@@ -34,12 +34,12 @@ local scareImage = Instance.new("ImageLabel") -- Đổi tên biến
 scareImage.BackgroundColor3 = Color3.fromRGB(0,0,255)
 scareImage.BackgroundTransparency = 1
 scareImage.Size = UDim2.new(1,0,1,0)
-scareImage.Image = "rbxassetid://99366177980950"
+scareImage.Image = "rbxassetid://124159807881215"
 scareImage.ImageTransparency = 0.7
 scareImage.Parent = scareGUI
 
 -- Chờ 1 giây để hiệu ứng GUI ban đầu
-task.wait(1)
+task.wait(2)
 scareGUI:Destroy() -- Hủy GUI sau 1 giây
 
 -- Biến để theo dõi trạng thái di chuyển và kết nối sự kiện
@@ -168,12 +168,12 @@ local scareImage = Instance.new("ImageLabel")
 scareImage.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 scareImage.BackgroundTransparency = 1
 scareImage.Size = UDim2.new(1, 0, 1, 0)
-scareImage.Image = "rbxassetid://99366177980950"
+scareImage.Image = "rbxassetid://124159807881215"
 scareImage.ImageTransparency = 0.6
 scareImage.Parent = scareGUI
 
 -- Hiển thị GUI trong 1 giây rồi hủy
-task.wait(1)
+task.wait(2)
 scareGUI:Destroy()
 
 -- Hàm kích hoạt hiệu ứng đáng sợ
