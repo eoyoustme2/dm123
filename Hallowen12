@@ -34,7 +34,7 @@ local scareImage = Instance.new("ImageLabel") -- Đổi tên biến
 scareImage.BackgroundColor3 = Color3.fromRGB(0,0,255)
 scareImage.BackgroundTransparency = 1
 scareImage.Size = UDim2.new(1,0,1,0)
-scareImage.Image = "rbxassetid://12466328200"
+scareImage.Image = "rbxassetid://99366177980950"
 scareImage.ImageTransparency = 0.7
 scareImage.Parent = scareGUI
 
@@ -168,7 +168,7 @@ local scareImage = Instance.new("ImageLabel")
 scareImage.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 scareImage.BackgroundTransparency = 1
 scareImage.Size = UDim2.new(1, 0, 1, 0)
-scareImage.Image = "rbxassetid://12466328200"
+scareImage.Image = "rbxassetid://99366177980950"
 scareImage.ImageTransparency = 0.6
 scareImage.Parent = scareGUI
 
