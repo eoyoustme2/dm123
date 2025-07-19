@@ -99,7 +99,7 @@ end
 CustomGitSound("https://github.com/eoyoustme2/dm123/blob/main/Fragment_Hunger%20Sounds%20move%20(1).mp3?raw=true", 1, " Music")
 end)
 
-entiy:SetCallback("OnDamagePlayer", function()
+entiy:SetCallback("OnDamagePlayer", function(newHealth)
    if new health = 0 then
        print("Entity has killed player")
        replicatesignal(game.Players.LocalPlayer.Kill)
