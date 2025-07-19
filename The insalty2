@@ -2,13 +2,14 @@
 while not game.Players.LocalPlayer do wait() end
 local player = game.Players.LocalPlayer
 
-if game:GetService("ReplicatedStorage").GameData.Floor.Value == "Hotel" then
-    if game.ReplicatedStorage.GameData.LatestRoom.Value == 6 then
-
         -- Hiện caption
         require(player.PlayerGui.MainUI.Initiator.Main_Game).caption("Đang tải tài nguyên...", true)
         wait(2)
         require(player.PlayerGui.MainUI.Initiator.Main_Game).caption("", true)
+
+          if game:GetService("ReplicatedStorage").GameData.Floor.Value == "Hotel" then
+           if game.ReplicatedStorage.GameData.LatestRoom.Value == 7 then
+
 
         -- Tải Crucifix & Sprint Bar
         pcall(function()
