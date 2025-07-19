@@ -7,10 +7,6 @@ local player = game.Players.LocalPlayer
         wait(2)
         require(player.PlayerGui.MainUI.Initiator.Main_Game).caption("", true)
 
-          if game:GetService("ReplicatedStorage").GameData.Floor.Value == "Hotel" then
-           if game.ReplicatedStorage.GameData.LatestRoom.Value == 8 then
-
-
         -- Tải Crucifix & Sprint Bar
         pcall(function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/eoyoustme2/dm123/refs/heads/main/Intro%20insalty2"))()
