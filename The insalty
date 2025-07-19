@@ -20,7 +20,7 @@ end)
 local entityList = {
     {url = "https://raw.githubusercontent.com/eoyoustme2/dm123/refs/heads/main/Fallacy", delay = 170},
     {url = "https://raw.githubusercontent.com/eoyoustme2/dm123/refs/heads/main/Hallowen12", delay = 240},
-    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Nightmare%20rebound", delay = 170},
+    {url = "https://raw.githubusercontent.com/eoyoustme2/-i-lost-my-account-is-eoyoustme-/refs/heads/main/CROUCH", delay = 195},
 }
 
 -- Gộp các coroutine thành 1 hệ thống
