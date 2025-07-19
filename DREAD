@@ -1,0 +1,97 @@
+game.ReplicatedStorage.GameData.LatestRoom.Changed:Wait()
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local HumanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local CurrentRooms = game.Workspace.CurrentRooms
+local currentLoadedRoom = game.ReplicatedStorage.GameData.LatestRoom.Value
+local SpawnVariable = CurrentRooms:FindFirstChild(currentLoadedRoom)
+
+local Dread = game:GetObjects("rbxassetid://16834807322")[1]
+Dread.Parent = game.Workspace
+Dread.PrimaryPart = Dread:FindFirstChildWhichIsA("BasePart")
+Dread.PrimaryPart.Anchored = true
+Dread.PrimaryPart.CanCollide = false
+Dread.PrimaryPart.Position = SpawnVariable.Parts.Floor.Position + Vector3.new(0,6,0)
+
+wait(5)
+local debounce = false
+
+local function death()
+debounce = true
+game:GetService("RunService").RenderStepped:Connect(function()
+local Camera = workspace.CurrentCamera
+local cameraPosition = Camera.CFrame.Position
+local Dreade = Dread.PrimaryPart
+local modelPosition = Dreade:GetPivot().Position
+Camera.CFrame = CFrame.new(cameraPosition, modelPosition)
+end)
+
+wait(3)
+
+local function GetGitSound(GithubSnd, SoundName)
+                local url = GithubSnd
+                if not isfile(SoundName .. ".mp3") then
+                    writefile(SoundName .. ".mp3", game:HttpGet(url))
+                end
+                local sound = Instance.new("Sound")
+                sound.SoundId = (getcustomasset or getsynasset)(SoundName .. ".mp3")
+                return sound
+end
+           local Debri = game:GetService("Debris")
+           local spawn = GetGitSound("https://github.com/Tinkgy111/Bang/blob/main/lv_0_20250111000930.mp3?raw=true", "spawner")
+spawn.Parent = game.Workspace
+spawn.Volume = 3
+spawn:Play()
+for i,v in pairs(Dread:GetDescendants()) do
+     if v:IsA("ParticleEmitter") then
+        v.TimeScale = 0
+     end
+end
+
+Debri:AddItem(Dread, 4)
+game.Lighting.MainColorCorrection.Contrast = 100
+game.Lighting.MainColorCorrection.Saturation = 100
+wait(4)
+game:GetService("RunService").RenderStepped:Connect(function()
+HumanoidRootPart.Position = SpawnVariable.Parts.Floor.Position
+end)
+            local CameraShaker = require(game.ReplicatedStorage.CameraShaker)
+            local camera = game.Workspace.CurrentCamera
+            local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
+                camera.CFrame = camera.CFrame * shakeCf
+            end)
+            camShake:Start()
+            camShake:ShakeOnce(90, 90, 90, 90.5, 90, 95)
+wait(7)
+game.Players.LocalPlayer.Character.Humanoid:TakeDamage(125)
+SpawnVariable.Parts.Floor:Destroy()
+end
+
+
+task.spawn(function()
+while task.wait() do
+if debounce == true then
+     break
+end
+
+local _, onScreen = workspace.CurrentCamera:WorldToScreenPoint(Dread.PrimaryPart.Position)
+local ray = game.Workspace:Raycast(Dread.PrimaryPart.Position,game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Dread.PrimaryPart.Position)
+if ray.Instance.Parent == game.Players.LocalPlayer.Character or ray.Instance.Parent.Parent == game.Players.LocalPlayer.Character then
+if onScreen then
+
+death()
+
+end
+end
+end
+end)
+
+
+
+
+
+game.ReplicatedStorage.GameData.LatestRoom.Changed:Wait()
+game.ReplicatedStorage.GameData.LatestRoom.Changed:Wait()
+game.ReplicatedStorage.GameData.LatestRoom.Changed:Wait()
+Dread:Destroy()
