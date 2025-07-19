@@ -101,27 +101,6 @@ volumeTween:Play()
 
 end)
 
-entity:SetCallback("OnSpawned", function()
-function GitAud(soundgit,filename)
-    SoundName=tostring(SoundName)
-    local url=soundgit
-    local FileName = filename
-    writefile(FileName..".mp3", game:HttpGet(url))
-    return (getcustomasset or getsynasset)(FileName..".mp3")
-end
-
-function CustomGitSound(soundlink, vol, filename)
-    local sound = Instance.new("Sound")
-    sound.SoundId = GitAud(soundlink, filename)
-    sound.Parent = workspace
-    sound.Name = "Music"
-    sound.Volume = 2
-   sound:Play()
-end
-
-CustomGitSound("https://github.com/eoyoustme2/dm123/blob/main/Fragment_Hunger%20Sounds%20move%20(1).mp3?raw=true", 1, " Music")
-end)
-
 entity:SetCallback("OnDamagePlayer", function(newHealth)
     if newHealth == 0 then
        print("Entity has killed the player")
