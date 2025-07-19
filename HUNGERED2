@@ -68,16 +68,6 @@ local entity = spawner.Create({
     }
 })
 
-entity(SetCallback("OnDespawning", function()
-local cue2 = Instance.new("Sound")
-cue2.Parent = game.Workspace
-cue2.Name = "Spawn"
-cue2.SoundId = "rbxassetid://9125712561"
-cue2.Volume = 9999
-cue2.PlaybackSpeed = 0.4
-cue2:Play()
-end)
-
 entity:SetCallback("OnDespawned", function()
     achievementGiver({
         Title = "Too smart",
@@ -85,6 +75,14 @@ entity:SetCallback("OnDespawned", function()
         Reason = "Encounter Hunger/Hungered",
         Image = "rbxassetid://17787953833"
     })
+
+local cue2 = Instance.new("Sound")
+cue2.Parent = game.Workspace
+cue2.Name = "Spawn"
+cue2.SoundId = "rbxassetid://9125712561"
+cue2.Volume = 9999
+cue2.PlaybackSpeed = 0.4
+cue2:Play()
 end)
 
 entity:SetCallback("OnSpawned", function()
