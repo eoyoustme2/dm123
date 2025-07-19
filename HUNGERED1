@@ -75,7 +75,6 @@ cue2.Name = "Spawn"
 cue2.SoundId = "rbxassetid://9125712561"
 cue2.Volume = 9999
 cue2.PlaybackSpeed = 0.4
-cue2.TimePosition = 1
 cue2:Play()
 end)
 
