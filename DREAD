@@ -14,7 +14,7 @@ Dread.PrimaryPart.Anchored = true
 Dread.PrimaryPart.CanCollide = false
 Dread.PrimaryPart.Position = SpawnVariable.Parts.Floor.Position + Vector3.new(0,6,0)
 
-wait(5)
+wait(2)
 local debounce = false
 
 local function death()
@@ -52,7 +52,7 @@ end
 Debri:AddItem(Dread, 4)
 game.Lighting.MainColorCorrection.Contrast = 100
 game.Lighting.MainColorCorrection.Saturation = 100
-wait(4)
+wait(1)
 game:GetService("RunService").RenderStepped:Connect(function()
 HumanoidRootPart.Position = SpawnVariable.Parts.Floor.Position
 end)
