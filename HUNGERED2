@@ -75,6 +75,7 @@ entity:SetCallback("OnDespawned", function()
         Reason = "Encounter Hunger/Hungered",
         Image = "rbxassetid://17787953833"
     })
+local TweenService = game:GetService("TweenService")
 
 local cue2 = Instance.new("Sound")
 cue2.Parent = game.Workspace
@@ -83,6 +84,21 @@ cue2.SoundId = "rbxassetid://9125712561"
 cue2.Volume = 9999
 cue2.PlaybackSpeed = 0.4
 cue2:Play()
+
+-- Tạo Tween để giảm Volume
+local tweenInfo = TweenInfo.new(
+    6,                  -- Thời gian: 6 giây
+    Enum.EasingStyle.Linear,  -- Kiểu easing mượt
+    Enum.EasingDirection.Out  -- Hướng easing
+)
+
+local goal = {
+    Volume = 0
+}
+
+local volumeTween = TweenService:Create(cue2, tweenInfo, goal)
+volumeTween:Play()
+
 end)
 
 entity:SetCallback("OnSpawned", function()
