@@ -16,27 +16,6 @@ cue2.Volume = 9999
 cue2.PlaybackSpeed = 1
 cue2:Play()
 
-wait(13)
-
-function GitAud(soundgit,filename)
-    SoundName=tostring(SoundName)
-    local url=soundgit
-    local FileName = filename
-    writefile(FileName..".mp3", game:HttpGet(url))
-    return (getcustomasset or getsynasset)(FileName..".mp3")
-end
-
-function CustomGitSound(soundlink, vol, filename)
-    local sound = Instance.new("Sound")
-    sound.SoundId = GitAud(soundlink, filename)
-    sound.Parent = workspace
-    sound.Name = "Music"
-    sound.Volume = 2
-   sound:Play()
-end
-
-CustomGitSound("https://github.com/eoyoustme2/dm123/blob/main/Fragment_Hunger%20Sounds%20move%20(1).mp3?raw=true", 1, " Music")
-
 -- Dùng Entity Spawner V2
 local spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Entity%20Spawner/V2/Source.lua"))()
 local achievementGiver = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Custom%20Achievements/Source.lua"))()
@@ -97,6 +76,27 @@ entity:SetCallback("OnDespawned", function()
         Image = "rbxassetid://17787953833"
     })
 end)
+
+entity:SetCallback("OnSpawned", function()
+   print("entity has spawned")
+function GitAud(soundgit,filename)
+    SoundName=tostring(SoundName)
+    local url=soundgit
+    local FileName = filename
+    writefile(FileName..".mp3", game:HttpGet(url))
+    return (getcustomasset or getsynasset)(FileName..".mp3")
+end
+
+function CustomGitSound(soundlink, vol, filename)
+    local sound = Instance.new("Sound")
+    sound.SoundId = GitAud(soundlink, filename)
+    sound.Parent = workspace
+    sound.Name = "Music"
+    sound.Volume = 2
+   sound:Play()
+end
+
+CustomGitSound("https://github.com/eoyoustme2/dm123/blob/main/Fragment_Hunger%20Sounds%20move%20(1).mp3?raw=true", 1, " Music")
 
 task.delay(13.856, function()
     entity:Run()
