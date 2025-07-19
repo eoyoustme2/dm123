@@ -5,7 +5,7 @@ require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game).caption("
 
 -- Tải Crucifix & Sprint Bar
 pcall(function()
-
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/eoyoustme2/dm123/refs/heads/main/Intro%20insalty"))()
 end)
 
 -- Âm thanh mở cửa
