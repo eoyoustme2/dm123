@@ -16,6 +16,8 @@ cue2.Volume = 9999
 cue2.PlaybackSpeed = 1
 cue2:Play()
 
+wait(13)
+
 function GitAud(soundgit,filename)
     SoundName=tostring(SoundName)
     local url=soundgit
