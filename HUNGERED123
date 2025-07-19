@@ -78,7 +78,6 @@ entity:SetCallback("OnDespawned", function()
 end)
 
 entity:SetCallback("OnSpawned", function()
-   print("entity has spawned")
 function GitAud(soundgit,filename)
     SoundName=tostring(SoundName)
     local url=soundgit
@@ -97,6 +96,7 @@ function CustomGitSound(soundlink, vol, filename)
 end
 
 CustomGitSound("https://github.com/eoyoustme2/dm123/blob/main/Fragment_Hunger%20Sounds%20move%20(1).mp3?raw=true", 1, " Music")
+end)
 
 task.delay(13.856, function()
     entity:Run()
