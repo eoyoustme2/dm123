@@ -1,3 +1,6 @@
+if game:GetService("ReplicatedStorage").GameData.Floor.Value == "Hotel" then
+if game.ReplicatedStorage.GameData.LatestRoom.Value == 5 then
+
 -- Hiện caption
 require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game).caption(" ", true)
 wait(2)
