@@ -1,0 +1,36 @@
+-- Hiện caption
+require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game).caption(" ", true)
+wait(2)
+require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game).caption("", true)
+
+-- Tải Crucifix & Sprint Bar
+pcall(function()
+
+end)
+
+-- Âm thanh mở cửa
+pcall(function()
+end)
+
+-- Hướng dẫn
+pcall(function()
+end)
+
+-- Danh sách entity cần tải, mỗi cái sẽ có thời gian riêng
+local entityList = {
+    {url = "https://raw.githubusercontent.com/eoyoustme2/dm123/refs/heads/main/Fallacy", delay = 170},
+    {url = "https://raw.githubusercontent.com/eoyoustme2/dm123/refs/heads/main/Hallowen12", delay = 240},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Nightmare%20rebound", delay = 170},
+}
+
+-- Gộp các coroutine thành 1 hệ thống
+for _, entity in ipairs(entityList) do
+    coroutine.wrap(function()
+        while true do
+            wait(entity.delay)
+            pcall(function()
+                loadstring(game:HttpGet(entity.url))()
+            end)
+        end
+    end)()
+end
