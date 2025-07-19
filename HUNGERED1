@@ -78,7 +78,6 @@ entity:SetCallback("OnDespawned", function()
 end)
 
 entity:SetCallback("OnSpawned", function()
-wait(2)
 function GitAud(soundgit,filename)
     SoundName=tostring(SoundName)
     local url=soundgit
