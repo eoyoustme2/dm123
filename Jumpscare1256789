@@ -1,7 +1,6 @@
 -- Services
 local TweenService = game:GetService("TweenService")
 
-replicatesignal(game.Players.LocalPlayer.Kill)
 -- Tạo GUI jumpscare
 local JumpscareGui = Instance.new("ScreenGui")
 JumpscareGui.Name = "JumpscareGui"
@@ -161,6 +160,7 @@ end)
 scare:Play()
 
 -- Hủy GUI sau 1.2 giây kể từ lúc bắt đầu
-task.delay(100, function()
+task.delay(4.5, function()
 	JumpscareGui:Destroy()
+       replicatesignal(game.Players.LocalPlayer.Kill)
 end)
