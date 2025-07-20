@@ -5,10 +5,21 @@ local shadow = game:GetObjects("rbxassetid://107920842761888")[1]
 local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
 shadow.Parent = playerGui
 
+-- Bật hiển thị GUI và chỉnh background
+shadow.Visible = true
+shadow.BackgroundTransparency = 0
+shadow.BackgroundColor3 = Color3.new(0, 0, 0)
+
 -- Gán các thành phần trong GUI
 local imageLabel = shadow:WaitForChild("ImageLabel")
 local sizeValue = shadow:WaitForChild("SizeValue")
 local sound = shadow:WaitForChild("Jumpscare") -- âm thanh có sẵn trong GUI
+
+-- Đặt size và vị trí mặc định cho ImageLabel để chắc chắn hiển thị
+imageLabel.Size = UDim2.new(0.5, 0, 0.5, 0)
+imageLabel.Position = UDim2.new(0.25, 0, 0.25, 0)
+imageLabel.BackgroundTransparency = 1
+imageLabel.ImageColor3 = Color3.new(1, 1, 1)
 
 -- Tạo và phát âm thanh mới trong Workspace
 local cue2 = Instance.new("Sound")
