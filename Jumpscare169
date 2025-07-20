@@ -36,11 +36,13 @@ Face.BackgroundTransparency = 1
 Face.Position = UDim2.new(0.5, 0, 0.5, 0)
 Face.ResampleMode = Enum.ResamplerMode.Pixelated
 Face.Size = UDim2.new(0, 150, 0, 150)
-Face.Image = "rbxassetid://16048233017" -- thay ID mặt bạn muốn
+Face.Image = "rbxassetid://16197424549" -- thay ID mặt bạn muốn
 Face.ImageColor3 = Color3.fromRGB(0, 170, 255)
 Face.ZIndex = 1000
 Face.ImageTransparency = 0
 Face.Parent = Background
+
+wait(1)
 
 -- Âm thanh jumpscare setup
 local scare = Instance.new("Sound")
@@ -93,7 +95,7 @@ end)
 local keepRotating = true
 task.spawn(function()
 	while keepRotating do
-		Face.Rotation = math.random(-15, 15)
+		Face.Rotation = math.random(-55, 55)
 		task.wait(0.01)
 	end
 end)
@@ -125,7 +127,7 @@ task.spawn(function()
 	-- Zoom mặt ra to cực đại trong 0.7 giây
 	local duration = 4.5
 	local enlargeTween = tweenTo(Face, {
-		Size = UDim2.new(2.9, 0, 2.5, 0),
+		Size = UDim2.new(2.5, 0, 2.5, 0),
 		ImageTransparency = 0,
 	}, duration)
 
