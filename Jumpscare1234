@@ -45,27 +45,24 @@ Face.Parent = Background
 -- Âm thanh jumpscare setup
 local scare = Instance.new("Sound")
 scare.Name = "MyEarsBurn"
-scare.SoundId = "rbxassetid://85271883712040"
-scare.PlaybackSpeed = 3
-scare.Volume = 10
+scare.SoundId = "rbxassetid://rbxassetid://11984351"
+scare.PlaybackSpeed = 2
+scare.Volume = 2
 scare.Parent = JumpscareGui
 
 local shift = Instance.new("PitchShiftSoundEffect")
-shift.Octave = 0.5
+shift.Octave = 0.62
 shift.Parent = scare
 
 local distort = Instance.new("DistortionSoundEffect")
 distort.Level = 1
 distort.Parent = scare
 
-local distort2 = Instance.new("DistortionSoundEffect")
-distort2.Level = 1
-distort2.Parent = scare
-
-local eq = Instance.new("EqualizerSoundEffect")
-eq.HighGain = 10
-eq.MidGain = 10
-eq.LowGain = 3.7
+local eq = Instance.new("FlangeSoundEffect")
+eq.Depth = 1
+eq.Mix = 1
+eq.Priority = 0
+eq.Rate = 1.5
 eq.Parent = scare
 
 -- Hiệu ứng nháy màu nền Background
