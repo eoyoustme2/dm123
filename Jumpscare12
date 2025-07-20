@@ -18,4 +18,4 @@ imageLabel.Size = UDim2.new(0.5,0,0.5,0)
 imageLabel.Position = UDim2.new(0.25,0,0.25,0)
 imageLabel.BackgroundTransparency = 1
 imageLabel.Image = "rbxassetid://11131699495"
-imageLabel.Visible = true
+imageLabel.Visible = false
