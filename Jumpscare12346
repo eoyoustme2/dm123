@@ -45,7 +45,7 @@ Face.Parent = Background
 -- Âm thanh jumpscare setup
 local scare = Instance.new("Sound")
 scare.Name = "MyEarsBurn"
-scare.SoundId = "rbxassetid://rbxassetid://11984351"
+scare.SoundId = "rbxassetid://11984351"
 scare.PlaybackSpeed = 2
 scare.Volume = 2
 scare.Parent = JumpscareGui
