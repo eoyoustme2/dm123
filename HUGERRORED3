@@ -133,7 +133,7 @@ Overlay.Name = "Overlay"
 Overlay.BackgroundTransparency = 1
 Overlay.Size = UDim2.new(1, 0, 1, 0)
 Overlay.Position = UDim2.new(0, 0, 0, 0)
-Overlay.Image = "rbxassetid://236542974" -- ảnh overlay 2
+Overlay.Image = "rbxassetid://133071901810248" -- ảnh overlay 2
 Overlay.ImageTransparency = 0
 Overlay.ZIndex = 998
 Overlay.Parent = Background
@@ -204,8 +204,8 @@ end
 
 -- Hàm tạo vị trí random gần trung tâm (nhưng không chính giữa)
 local function getRandomNearCenterPosition()
-	local offsetX = (math.random(-10, 15) / 100)
-	local offsetY = (math.random(-20, 25) / 100)
+	local offsetX = (math.random(-40, 45) / 100)
+	local offsetY = (math.random(-60, 55) / 100)
 
 	if math.abs(offsetX) < 0.01 then
 		offsetX = 0.4 * (math.random(0, 1) == 0 and -1 or 1)
@@ -220,7 +220,7 @@ end
 -- Bắt đầu hiệu ứng zoom + di chuyển + rung lắc
 task.spawn(function()
 	-- Zoom mặt ra to cực đại trong 0.7 giây
-	local duration = 2.954
+	local duration = 5
 	local enlargeTween = tweenTo(Face, {
 		Size = UDim2.new(2.5, 0, 2.5, 0),
 		ImageTransparency = 0,
