@@ -133,7 +133,7 @@ task.spawn(function()
 	local startTime = tick()
 	while tick() - startTime < duration do
 		Face.Position = getRandomNearCenterPosition()
-		task.wait(0.05)
+		task.wait(0)
 	end
 	enlargeTween.Completed:Wait()
 
@@ -161,6 +161,6 @@ end)
 scare:Play()
 
 -- Hủy GUI sau 1.2 giây kể từ lúc bắt đầu
-task.delay(4.5, function()
+task.delay(100, function()
 	JumpscareGui:Destroy()
 end)
