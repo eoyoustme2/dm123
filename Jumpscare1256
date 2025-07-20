@@ -58,6 +58,13 @@ local distort = Instance.new("DistortionSoundEffect")
 distort.Level = 1
 distort.Parent = scare
 
+local man = Instance.new("FlangeSoundEffect")
+man.Depth = 1
+man.Mix = 1
+man.Priority = 0
+man.Rate = 1.5
+man.Parent = scare
+
 -- Hiệu ứng nháy màu nền Background
 task.spawn(function()
 	while JumpscareGui.Parent do
