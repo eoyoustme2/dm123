@@ -234,7 +234,7 @@ task.spawn(function()
 	-- Zoom mặt ra to cực đại trong 0.7 giây
 	local duration = 4.6
 	local enlargeTween = tweenTo(Face, {
-		Size = UDim2.new(2.2, 0, 2.5, 0),
+		Size = UDim2.new(1.5, 0, 2.5, 0),
 		ImageTransparency = 0,
 	}, duration)
 
