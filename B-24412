@@ -36,7 +36,7 @@ local entity = Spawner.createEntity({
         100, -- Shake start distance (from Entity to you)
     },
     Jumpscare = {
-       true, -- Enabled/Disabled
+       false, -- Enabled/Disabled
         {
             Image1 = "rbxassetid://11394048190", -- Image1 url
             Image2 = "rbxassetid://11394048190", -- Image2 url
@@ -184,9 +184,9 @@ man.Parent = scare
 -- Hiệu ứng nháy màu nền Background
 task.spawn(function()
 	while JumpscareGui.Parent do
-		Background.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+		Background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		task.wait(math.random(25, 100) / 1000)
-		Background.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Background.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 		task.wait(math.random(25, 100) / 1000)
 	end
 end)
