@@ -185,7 +185,7 @@ local player = game.Players.LocalPlayer
 		local face = Instance.new("ImageLabel", screenGui)
 		face.AnchorPoint = Vector2.new(0.5, 0.5)
 		face.Position = UDim2.new(0.5, 0, 0.589, 0)
-		face.Size = UDim2.new(0, 300, 0, 300)
+		face.Size = UDim2.new(0, 50, 0, 50)
 		face.Image = "rbxassetid://11395249132"
 		face.BackgroundTransparency = 1
 
@@ -201,7 +201,7 @@ local player = game.Players.LocalPlayer
 		-- Camera zoom
 		local startFov = camera.FieldOfView
 		local zoomFov = 60
-		local zoomDuration = 0.7
+		local zoomDuration = 1
 
 		camera.CameraType = Enum.CameraType.Scriptable
 		game:GetService("TweenService"):Create(camera, TweenInfo.new(zoomDuration), {FieldOfView = zoomFov}):Play()
@@ -234,11 +234,11 @@ local player = game.Players.LocalPlayer
 
 		task.spawn(function()
 			while not stopEffects do
-				face.Rotation = 10
+				face.Rotation = 20
 				face.Image = "rbxassetid://101914212937482"
-				task.wait(0.0589)
-				face.Rotation = -10
-				task.wait(0.0589)
+				task.wait(0.05)
+				face.Rotation = -20
+				task.wait(0.05)
 			end
 		end)
 
@@ -286,7 +286,7 @@ local player = game.Players.LocalPlayer
 			screenGui:Destroy()
 		end)
 
-		task.wait(0.4)
+		task.wait(0.7)
 		camera.CameraType = Enum.CameraType.Custom
 		camera.FieldOfView = startFov
   else
