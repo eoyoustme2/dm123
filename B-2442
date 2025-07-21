@@ -161,24 +161,31 @@ Face.Parent = Background
 -- Âm thanh jumpscare setup
 local scare = Instance.new("Sound")
 scare.Name = "MyEarsBurn"
-scare.SoundId = "rbxassetid://11984351"
-scare.PlaybackSpeed = 2
+scare.SoundId = "rbxassetid://1592934514"
+scare.PlaybackSpeed = 0.7
 scare.Volume = 2
 scare.Parent = JumpscareGui
 
 local shift = Instance.new("PitchShiftSoundEffect")
-shift.Octave = 0.5
+shift.Octave = 0.62
 shift.Parent = scare
 
 local distort = Instance.new("DistortionSoundEffect")
 distort.Level = 1
 distort.Parent = scare
 
-local man = Instance.new("FlangeSoundEffect")
-man.Depth = 1
-man.Mix = 1
+local Echo = Instance.new("EchoSoundEffect")
+Echo.Delay = 0.02
+Echo.DryLevel = 0
+Echo.Mix = 0
+Echo.Rate = 1
+Echo.WetLevel = 0
+
+local man = Instance.new("ChorusSoundEffect")
+man.Depth = 0.15
+man.Mix = 0.5
 man.Priority = 0
-man.Rate = 1.5
+man.Rate = 0.5
 man.Parent = scare
 
 -- Hiệu ứng nháy màu nền Background
@@ -239,7 +246,7 @@ end
 -- Bắt đầu hiệu ứng zoom + di chuyển + rung lắc
 task.spawn(function()
 	-- Zoom mặt ra to cực đại trong 0.7 giây
-	local duration = 2.6
+	local duration = 4.6
 	local enlargeTween = tweenTo(Face, {
 		Size = UDim2.new(2.2, 0, 2.5, 0),
 		ImageTransparency = 0,
