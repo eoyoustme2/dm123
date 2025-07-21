@@ -102,7 +102,6 @@ local player = game.Players.LocalPlayer
 	local camera = workspace.CurrentCamera
 
 	-- Bắt đầu Jumpscare nếu player chết
-	if newHealth <= 0 then
 		local screenGui = Instance.new("ScreenGui")
 		screenGui.Parent = playerGui
 		screenGui.Name = "ScreenGui"
