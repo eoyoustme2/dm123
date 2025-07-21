@@ -186,7 +186,7 @@ local player = game.Players.LocalPlayer
 		task.spawn(function()
 			while not stopEffects do
 				face.Rotation = 10
-				face.Image = "rbxassetid://86138467360614"
+				face.Image = "rbxassetid://132219569139802"
 				task.wait(0.0589)
 				face.Rotation = -10
 				task.wait(0.0589)
