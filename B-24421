@@ -180,6 +180,7 @@ Echo.DryLevel = 0
 Echo.Mix = 0
 Echo.Rate = 1
 Echo.WetLevel = 0
+Echo.Parent = scare
 
 local man = Instance.new("ChorusSoundEffect")
 man.Depth = 0.15
