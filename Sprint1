@@ -1,0 +1,186 @@
+-- Khởi tạo GUI stamina và hiệu ứng
+local Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local UIS = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+
+local Plr = Players.LocalPlayer
+local Char = Plr.Character or Plr.CharacterAdded:Wait()
+local Hum = Char:WaitForChild("Humanoid")
+
+local stamina, staminaMax = 100, 100
+local sprintTime = 7
+local cooldown = false
+local isSprinting = false
+
+-- Module game (chỉnh lại nếu khác path)
+local ModuleScripts = {
+	MainGame = require(Plr.PlayerGui.MainUI.Initiator.Main_Game),
+}
+
+-- Giao diện stamina
+local StaminaGui = Instance.new("ScreenGui", Parent)
+StaminaGui.Name = "StaminaGui"
+StaminaGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local Sprint = Instance.new("Frame", StaminaGui)
+Sprint.Name = "Sprint"
+Sprint.AnchorPoint = Vector2.new(0, 1)
+Sprint.BackgroundTransparency = 1
+Sprint.Position = UDim2.new(0.931, 0, 0.987, 0)
+Sprint.Size = UDim2.new(0.0556, 0, 0.0756, 0)
+Sprint.SizeConstraint = Enum.SizeConstraint.RelativeYY
+Sprint.ZIndex = 1005
+
+local ImageLabel = Instance.new("ImageLabel", Sprint)
+ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 222, 189)
+ImageLabel.Size = UDim2.new(1, 0, 1, 0)
+ImageLabel.SizeConstraint = Enum.SizeConstraint.RelativeYY
+ImageLabel.Visible = false
+ImageLabel.Image = "rbxassetid://190596490"
+ImageLabel.ImageColor3 = Color3.new(0, 0, 0)
+ImageLabel.ImageTransparency = 1
+
+Instance.new("UICorner", ImageLabel).CornerRadius = UDim.new(1, 0)
+Instance.new("UIPadding", Sprint):SetAttribute("PaddingTop", UDim.new(0.3, -5))
+
+local Bar = Instance.new("Frame", Sprint)
+Bar.Name = "Bar"
+Bar.AnchorPoint = Vector2.new(0, 0.5)
+Bar.BackgroundColor3 = Color3.fromRGB(56, 46, 39)
+Bar.BackgroundTransparency = 0.7
+Bar.Position = UDim2.new(-2.72, 0, 0.5, 0)
+Bar.Size = UDim2.new(3.6, 0, 0.6, 0)
+Instance.new("UICorner", Bar).CornerRadius = UDim.new(0.25, 0)
+Instance.new("UIPadding", Bar).PaddingTop = UDim.new(0, 4)
+
+local Fill = Instance.new("Frame", Bar)
+Fill.Name = "Fill"
+Fill.AnchorPoint = Vector2.new(0, 0.5)
+Fill.BackgroundColor3 = Color3.fromRGB(213, 185, 158)
+Fill.Position = UDim2.new(0, 0, 0.5, 0)
+Fill.Size = UDim2.new(1, 0, 1, 0)
+Fill.ZIndex = 2
+Instance.new("UICorner", Fill).CornerRadius = UDim.new(0.25, 0)
+
+-- Màn hình mờ khi exhausted
+local erm = Instance.new("ScreenGui", Parent)
+erm.IgnoreGuiInset = true
+erm.Name = "erm"
+erm.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local ExhaustedOverlay = Instance.new("ImageLabel", erm)
+ExhaustedOverlay.BackgroundTransparency = 1
+ExhaustedOverlay.Size = UDim2.new(1, 0, 1, 0)
+ExhaustedOverlay.Image = "rbxassetid://190596490"
+ExhaustedOverlay.ImageColor3 = Color3.new(0, 0, 0)
+ExhaustedOverlay.ImageTransparency = 1
+
+local zerostamtween = TweenService:Create(ExhaustedOverlay, TweenInfo.new(12), {ImageTransparency = 0})
+
+-- Hook tốc độ
+local nIdx
+nIdx = hookmetamethod(game, "__newindex", newcclosure(function(t, k, v)
+	if k == "WalkSpeed" and typeof(t) == "Instance" and t:IsA("Humanoid") then
+		if ModuleScripts.MainGame.chase then
+			v = ModuleScripts.MainGame.crouching and 15 or 22
+		elseif ModuleScripts.MainGame.crouching then
+			v = 8
+		else
+			v = isSprinting and 18 or 12 -- ✅ tốc độ chạy = 18
+		end
+	end
+	return nIdx(t, k, v)
+end))
+
+-- Chạy
+local function startSprinting()
+	if cooldown or ModuleScripts.MainGame.crouching then return end
+	isSprinting = true
+	zerostamtween:Play()
+
+	Hum:SetAttribute("SpeedBoost", workspace:FindFirstChild("SeekMovingNewClone") and 6 or 4)
+
+	while isSprinting and stamina > 0 do
+		stamina = math.max(stamina - 1, 0)
+		Fill.Size = UDim2.new(stamina / staminaMax, 1, 1, 0)
+		task.wait(sprintTime / 100)
+	end
+
+	isSprinting = false
+	Hum:SetAttribute("SpeedBoost", 0)
+	Hum.WalkSpeed = 12
+	zerostamtween:Pause()
+	TweenService:Create(ExhaustedOverlay, TweenInfo.new(1), {ImageTransparency = 1}):Play()
+
+	if stamina == 0 then
+		firesignal(game.ReplicatedStorage.Bricks.Caption.OnClientEvent, "You're exhausted.")
+		local sfx = Instance.new("Sound", workspace)
+		sfx.SoundId = "rbxassetid://8258601891"
+		sfx.Volume = 0.8
+		sfx.PlayOnRemove = true
+		sfx:Destroy()
+
+		cooldown = true
+		TweenService:Create(ExhaustedOverlay, TweenInfo.new(0.3), {ImageTransparency = 0}):Play()
+		wait(0.3)
+		TweenService:Create(ExhaustedOverlay, TweenInfo.new(10), {ImageTransparency = 1}):Play()
+		for i = 1, staminaMax do
+			stamina = i
+			Fill.Size = UDim2.new(i / staminaMax, 1, 1, 0)
+			task.wait(sprintTime / 50)
+		end
+		cooldown = false
+	else
+		while not UIS:IsKeyDown(Enum.KeyCode.Q) and stamina < staminaMax do
+			stamina = math.min(stamina + 1, staminaMax)
+			Fill.Size = UDim2.new(stamina / staminaMax, 1, 1, 0)
+			task.wait(sprintTime / 50)
+		end
+	end
+end
+
+-- Phím Q (PC)
+UIS.InputBegan:Connect(function(input, gameProcessed)
+	if not gameProcessed and input.KeyCode == Enum.KeyCode.Q then
+		startSprinting()
+	end
+end)
+
+-- Hỗ trợ mobile
+if UIS.TouchEnabled and not UIS.KeyboardEnabled then
+	local SprintButtonGui = Instance.new("ScreenGui", Parent)
+	SprintButtonGui.Name = "SprintButtonGui"
+	SprintButtonGui.ResetOnSpawn = false
+
+	local SprintButton = Instance.new("TextButton", SprintButtonGui)
+	SprintButton.Size = UDim2.new(0.15, 0, 0.15, 0)
+	SprintButton.Position = UDim2.new(0.758, 0, 0.701, 0)
+	SprintButton.BackgroundColor3 = Color3.fromRGB(255, 213, 128)
+	SprintButton.Text = "Sprint"
+	SprintButton.TextScaled = true
+	SprintButton.Font = Enum.Font.SourceSansBold
+	Instance.new("UICorner", SprintButton).CornerRadius = UDim.new(1, 0)
+
+	local pressing = false
+
+	SprintButton.MouseButton1Down:Connect(function()
+		if not cooldown and not ModuleScripts.MainGame.crouching then
+			pressing = true
+			isSprinting = true
+			coroutine.wrap(startSprinting)()
+		end
+	end)
+
+	SprintButton.MouseButton1Up:Connect(function()
+		pressing = false
+		isSprinting = false
+		Hum:SetAttribute("SpeedBoost", 0)
+		Hum.WalkSpeed = 12
+	end)
+end
+
+-- Mặc định
+Hum:SetAttribute("SpeedBoost", 0)
+Hum.WalkSpeed = 12
