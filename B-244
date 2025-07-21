@@ -223,8 +223,8 @@ end
 
 -- Hàm tạo vị trí random gần trung tâm (nhưng không chính giữa)
 local function getRandomNearCenterPosition()
-	local offsetX = (math.random(-20, 25) / 100)
-	local offsetY = (math.random(-30, 35) / 100)
+	local offsetX = (math.random(-12, 15) / 100)
+	local offsetY = (math.random(-15, 15) / 100)
 
 	if math.abs(offsetX) < 0.01 then
 		offsetX = 0.4 * (math.random(0, 1) == 0 and -1 or 1)
