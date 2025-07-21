@@ -59,7 +59,7 @@ local entityList = {
     {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Terror", delay = 490},
     {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Pandemonium", delay = 1001},
     {url = "https://raw.githubusercontent.com/vick-png/Wh1t3-spawn/refs/heads/main/Whatt", delay = 40},
-    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Guestly", delay = 220},
+    {url = "https://raw.githubusercontent.com/eoyoustme2/dm123/refs/heads/main/New%20guestly", delay = 220},
     {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/G-95", delay = 380},
     {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-60%20for%20doors%20spawn", delay = 250},
     {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/DEMON", delay = 666},
