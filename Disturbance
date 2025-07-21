@@ -185,7 +185,7 @@ local player = game.Players.LocalPlayer
 		local face = Instance.new("ImageLabel", screenGui)
 		face.AnchorPoint = Vector2.new(0.5, 0.5)
 		face.Position = UDim2.new(0.5, 0, 0.589, 0)
-		face.Size = UDim2.new(0, 50, 0, 50)
+		face.Size = UDim2.new(0, 30, 0, 30)
 		face.Image = "rbxassetid://11395249132"
 		face.BackgroundTransparency = 1
 
