@@ -124,7 +124,7 @@ Face.BackgroundTransparency = 1
 Face.Position = UDim2.new(0.5, 0, 0.5, 0)
 Face.ResampleMode = Enum.ResamplerMode.Pixelated
 Face.Size = UDim2.new(0, 150, 0, 150)
-Face.Image = "rbxassetid://18267060150" -- thay ID mặt bạn muốn
+Face.Image = "rbxassetid://17264398849" -- thay ID mặt bạn muốn
 Face.ImageColor3 = Color3.fromRGB(255, 255, 255)
 Face.ZIndex = 1000
 Face.ImageTransparency = 0
@@ -181,7 +181,7 @@ end)
 local keepRotating = true
 task.spawn(function()
 	while keepRotating do
-		Face.Rotation = math.random(-55, 55)
+		Face.Rotation = math.random(-25, 25)
 		task.wait(0.01)
 	end
 end)
