@@ -135,6 +135,11 @@ entity:SetCallback("OnDespawned", function()
 		task.wait(1)
 	end
 end)
+local player = game.Players.LocalPlayer
+	local playerGui = player:WaitForChild("PlayerGui")
+	local character = player.Character or player.CharacterAdded:Wait()
+	local humanoid = character:WaitForChild("Humanoid")
+	local camera = workspace.CurrentCamera
 
 -- Jumpscare khi chết
 entity:SetCallback("OnDamagePlayer", function(newHealth)
@@ -147,7 +152,6 @@ local player = game.Players.LocalPlayer
 	local camera = workspace.CurrentCamera
 
 	-- Bắt đầu Jumpscare nếu player chết
-	if newHealth <= 0 then
 		local screenGui = Instance.new("ScreenGui")
 		screenGui.Parent = playerGui
 		screenGui.Name = "ScreenGui"
