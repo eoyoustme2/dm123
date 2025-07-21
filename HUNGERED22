@@ -102,9 +102,6 @@ volumeTween:Play()
 end)
 
 entity:SetCallback("OnDamagePlayer", function(newHealth)
-    if newHealth == 0 then
-       print("Entity has killed the player")
-
 local player = game.Players.LocalPlayer
 	local playerGui = player:WaitForChild("PlayerGui")
 	local character = player.Character or player.CharacterAdded:Wait()
