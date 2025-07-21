@@ -1,0 +1,83 @@
+-- Hiện caption
+require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game).caption("super crazy mode is now active ", true)
+wait(2)
+require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game).caption("Made by HUNGERED, Nhankg, Guestly", true)
+
+-- Tải Crucifix & Sprint Bar
+pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Crucifix"))()
+    loadstring(game:HttpGet("https://pastefy.app/EpqLU3vm/raw"))()
+end)
+
+-- Âm thanh hang động
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://9113731836" -- Chỉnh lại cho hợp lệ nếu cần
+sound.Volume = 2
+sound.Looped = true
+sound.Parent = workspace
+sound:Play()
+
+-- Fog đen
+local Lighting = game:GetService("Lighting")
+Lighting.Ambient = Color3.new(0, 0, 0)
+Lighting.Brightness = 0.1
+Lighting.FogEnd = 50
+Lighting.FogStart = 35
+Lighting.FogColor = Color3.new(0, 0, 0)
+
+-- Âm thanh mở cửa
+pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/check78/Endless-Doors-In-Doors/main/custom%20doors%20sounds.txt"))()
+end)
+
+-- Goofy Screech
+game.ReplicatedStorage.Entities.Screech.Top.Eyes.Color = Color3.fromRGB(255, 255, 0)
+game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules.Screech.Caught.SoundId = "rbxassetid://7492033495"
+game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules.Screech.Caught.PlaybackSpeed = 1.6
+game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules.Screech.Attack.SoundId = "rbxassetid://8080941676"
+
+-- Goofy Hide & Spider
+game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules.HideMonster.Scare.SoundId = "rbxassetid://9126213741"
+game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules.SpiderJumpscare.Scare.SoundId = "rbxassetid://8080941676"
+
+-- Hướng dẫn
+pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Guiding%20candle"))()
+end)
+
+-- Danh sách entity cần tải, mỗi cái sẽ có thời gian riêng
+local entityList = {
+    {url = "https://pastefy.app/ofutwkjb/raw", delay = 325},
+    {url = "https://raw.githubusercontent.com/namnguyen33/41450088/refs/heads/main/Null", delay = 210},
+    {url = "https://raw.githubusercontent.com/huyhoanggphuc/Entity-obfuscate/refs/heads/main/Dread.lua", delay = 600},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Nightmare%20rebound", delay = 170},
+    {url = "https://pastefy.app/1xxpTxo3/raw", delay = 100000},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Monoxide", delay = 190},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Black%20Hole", delay = 300},
+    {url = "https://raw.githubusercontent.com/localplayerr/Doors-stuff/refs/heads/main/Immersive%20mode/Darkness", delay = 1500},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Hungry%20doors%20nightmare", delay = 35},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Terror", delay = 490},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Pandemonium", delay = 1001},
+    {url = "https://raw.githubusercontent.com/vick-png/Wh1t3-spawn/refs/heads/main/Whatt", delay = 40},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Guestly", delay = 220},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/G-95", delay = 380},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-60%20for%20doors%20spawn", delay = 250},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/DEMON", delay = 666},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Twiter%20remake", delay = 450},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Twiter%202", delay = 480},
+    {url = "https://raw.githubusercontent.com/eoyoustme/rebouna/refs/heads/main/B-2441", delay = 244},
+}
+
+-- Gộp các coroutine thành 1 hệ thống
+for _, entity in ipairs(entityList) do
+    coroutine.wrap(function()
+        while true do
+            wait(entity.delay)
+            game.ReplicatedStorage.GameData.LatestRoom.Changed:Wait()
+            wait(0)
+            pcall(function()
+                loadstring(game:HttpGet(entity.url))()
+            end)
+        end
+    end)()
+end
