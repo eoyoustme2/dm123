@@ -174,20 +174,6 @@ local distort = Instance.new("DistortionSoundEffect")
 distort.Level = 1
 distort.Parent = scare
 
-local Echo = Instance.new("EchoSoundEffect")
-Echo.Delay = 0.02
-Echo.DryLevel = 0
-Echo.Rate = 1
-Echo.WetLevel = 0
-Echo.Parent = scare
-
-local man = Instance.new("ChorusSoundEffect")
-man.Depth = 0.15
-man.Mix = 0.5
-man.Priority = 0
-man.Rate = 0.5
-man.Parent = scare
-
 -- Hiệu ứng nháy màu nền Background
 task.spawn(function()
 	while JumpscareGui.Parent do
