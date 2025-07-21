@@ -143,15 +143,14 @@ local player = game.Players.LocalPlayer
 
 -- Jumpscare khi chết
 entity:SetCallback("OnDamagePlayer", function(newHealth)
-  if newHealth == 0 then
-       print("Entity has killed player")
 local player = game.Players.LocalPlayer
 	local playerGui = player:WaitForChild("PlayerGui")
 	local character = player.Character or player.CharacterAdded:Wait()
 	local humanoid = character:WaitForChild("Humanoid")
 	local camera = workspace.CurrentCamera
 
-	-- Bắt đầu Jumpscare nếu player chết
+        if newHealth == 0 then
+
 		local screenGui = Instance.new("ScreenGui")
 		screenGui.Parent = playerGui
 		screenGui.Name = "ScreenGui"
@@ -159,7 +158,7 @@ local player = game.Players.LocalPlayer
 
 		local stopEffects = false
 		local doneFading = false
-
+     
 		-- Âm thanh jumpscare
 		local killSound = Instance.new("Sound")
 		killSound.Parent = workspace
