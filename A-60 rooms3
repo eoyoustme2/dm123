@@ -127,7 +127,6 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
     print(newHealth == 0 and "Entity has killed the player" or "Entity has damaged the player")
 
     task.spawn(function()
-        local TweenService = game:GetService("TweenService")
         local Players = game:GetService("Players")
         local Workspace = game:GetService("Workspace")
         local RunService = game:GetService("RunService")
@@ -154,7 +153,7 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
 
         -- Khóa chuyển động nhân vật
         if humanoid then
-            humanoid.WalkSpeed = 15
+            humanoid.WalkSpeed = 16
             humanoid.JumpPower = 0
             humanoid.AutoRotate = false
             humanoid.PlatformStand = true
@@ -164,6 +163,11 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
         camera.CameraType = Enum.CameraType.Scriptable
         local camConnection = RunService.RenderStepped:Connect(function()
             if primaryPart and primaryPart.Parent then
+                -- Đặt vị trí entity đứng cách camera 4 studs về phía trước, cao hơn 2 studs
+                local camCFrame = camera.CFrame
+                local targetPosition = camCFrame.Position + camCFrame.LookVector * 4 + Vector3.new(0, 2, 0)
+                primaryPart.CFrame = CFrame.new(targetPosition, camCFrame.Position) -- Hướng entity nhìn vào camera
+                -- Đồng thời giữ camera nhìn entity luôn
                 camera.CFrame = CFrame.lookAt(camera.CFrame.Position, primaryPart.Position)
             else
                 camConnection:Disconnect()
@@ -171,39 +175,15 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
             end
         end)
 
-        -- Vòng lặp tween liên tục + damage khi tween chạy
+        -- Gây damage liên tục khi entity đứng trước camera
         while humanoid and humanoid.Health > 0 and entityModel and entityModel.Parent do
             if character:GetAttribute("Hiding") then
                 print("Người chơi đang ẩn, dừng mất máu.")
                 task.wait(0.1)
-                continue
-            end
-
-            local isTweening = true
-
-            local targetPos = humanoidRootPart.Position + humanoidRootPart.CFrame.LookVector * -4 + Vector3.new(0, 2, 0)
-            local tweenInfo = TweenInfo.new(0.7, Enum.EasingStyle.Linear)
-            local tweenGoal = {CFrame = CFrame.new(targetPos)}
-            local tween = TweenService:Create(primaryPart, tweenInfo, tweenGoal)
-            tween:Play()
-
-            -- Damage loop trong lúc tween chạy
-            local tweenDone = false
-            tween.Completed:Connect(function()
-                tweenDone = true
-            end)
-
-            while not tweenDone and humanoid and humanoid.Health > 0 do
-                if character:GetAttribute("Hiding") then break end
-
-                if isTweening then
-                    humanoid.Health = math.max(humanoid.Health - 0.9, 0)
-                end
+            else
+                humanoid.Health = math.max(humanoid.Health - 0.9, 0)
                 task.wait(0.04)
             end
-
-            isTweening = false
-            task.wait(0.1) -- Tạm nghỉ nhỏ rồi tween lại
         end
 
         -- Dọn dẹp sau khi thoát vòng lặp
