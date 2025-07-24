@@ -239,11 +239,11 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
         sound.SoundId = GitAud(soundlink, filename)
         sound.Parent = workspace
         sound.Name = "Music"
-        sound.Volume = 15
+        sound.Volume = 10
         sound:Play()
     end
 
-    CustomGitSound("https://github.com/eoyoustme/rebouna/blob/main/Kill_with_static.mp3?raw=true", 0.01, "Music")
+    CustomGitSound("https://github.com/eoyoustme2/-i-lost-my-account-is-eoyoustme-/blob/main/Kill_with_static.mp3.mpeg.wav?raw=true", 0.01, "Music")
 
     -- Đợi 1.5s đổi mặt entity (nếu có)
     task.wait(0.5)
