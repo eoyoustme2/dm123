@@ -162,7 +162,7 @@ cue2:Play()
 
     -- Tween ban đầu lao tới gần người chơi 0.7s
     local targetPosition = humanoidRootPart.Position + humanoidRootPart.CFrame.LookVector * 4 + Vector3.new(0, 2, 0)
-    local moveTweenInfo = TweenInfo.new(0.7, Enum.EasingStyle.Linear)
+    local moveTweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Linear)
     local moveTweenGoal = {CFrame = CFrame.new(targetPosition, camera.CFrame.Position)}
     local moveTween = TweenService:Create(primaryPart, moveTweenInfo, moveTweenGoal)
     moveTween:Play()
@@ -212,7 +212,7 @@ cue2:Play()
     end)
 
     -- Gây damage liên tục trong 6 giây hoặc đến khi chết/ẩn
-    local damageDuration = 1.886
+    local damageDuration = 1.786
     local damageStartTime = tick()
 
     while tick() - damageStartTime < damageDuration and humanoid and humanoid.Health > 0 do
@@ -220,7 +220,7 @@ cue2:Play()
             -- Nếu người chơi ẩn lúc đang damage thì thoát vòng loop luôn
             break
         else
-            humanoid.Health = humanoid.Health - 2
+            humanoid.Health = humanoid.Health - 4
         end
         task.wait(0.01)
     end
