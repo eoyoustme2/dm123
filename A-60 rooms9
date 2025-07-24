@@ -153,6 +153,13 @@ task.spawn(function()
     primaryPart.Anchored = true
     entityModel.PrimaryPart = primaryPart
 
+local cue2 = Instance.new("Sound")
+cue2.Parent = game.Workspace
+cue2.Name = "Spawn"
+cue2.SoundId = "rbxassetid://6459610652"
+cue2.Volume = 3
+cue2:Play()
+
     -- Tween ban đầu lao tới gần người chơi 0.7s
     local targetPosition = humanoidRootPart.Position + humanoidRootPart.CFrame.LookVector * 4 + Vector3.new(0, 2, 0)
     local moveTweenInfo = TweenInfo.new(0.7, Enum.EasingStyle.Linear)
@@ -205,7 +212,7 @@ task.spawn(function()
     end)
 
     -- Gây damage liên tục trong 6 giây hoặc đến khi chết/ẩn
-    local damageDuration = 6
+    local damageDuration = 1.886
     local damageStartTime = tick()
 
     while tick() - damageStartTime < damageDuration and humanoid and humanoid.Health > 0 do
@@ -213,7 +220,7 @@ task.spawn(function()
             -- Nếu người chơi ẩn lúc đang damage thì thoát vòng loop luôn
             break
         else
-            humanoid.Health = humanoid.Health - 0.9
+            humanoid.Health = humanoid.Health - 0.08
         end
         task.wait(0.01)
     end
