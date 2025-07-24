@@ -1,0 +1,42 @@
+require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game).caption("Rooms and Doors Mode Has Active", true)
+wait(2)
+require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game).caption("This mode is like Rooms and doors game in roblox this is mode and this mode makke by me HUNGERED or thanhphok and thank nhankg for test mode", true)
+
+-- Door Changer Floor 2 And Sound
+coroutine.wrap(function()
+    while true do
+        wait(0.0005)
+workspace.CurrentRooms[game.ReplicatedStorage.GameData.LatestRoom.Value].Door.Door.Open.SoundId = "rbxassetid://9120839010"
+workspace.CurrentRooms[game.ReplicatedStorage.GameData.LatestRoom.Value]:FindFirstChild("Door"):FindFirstChild("Door").Material = "WoodPlanks"
+workspace.CurrentRooms[game.ReplicatedStorage.GameData.LatestRoom.Value]:FindFirstChild("Door"):FindFirstChild("Door"):FindFirstChild("Sign").Material = "WoodPlanks"
+    end
+end)()
+
+pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/talales/Nhakg/refs/heads/main/cam%20lay%20roi%20test%20di"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/Flashlight"))()
+end)
+
+local entityList = {
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-60%20(rooms%20and%20doors)", delay = 60},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-60%20Prime", delay = 110},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-120", delay = 180},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-200", delay = 300},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-200%20prime", delay = 330},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-120%20prime", delay = 200},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-666", delay = 666},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-100", delay = 230}, 
+    {url = "https://pastebin.com/raw/QgVgtnnH", delay = 190},
+    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-333%20(Rooms%20And%20Doors)", delay = 383},
+}
+
+for _, entity in ipairs(entityList) do
+    coroutine.wrap(function()
+        while true do
+            wait(entity.delay)
+            pcall(function()
+                loadstring(game:HttpGet(entity.url))()
+            end)
+        end
+    end)()
+end
