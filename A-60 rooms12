@@ -198,11 +198,10 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
         local moveTweenInfo = TweenInfo.new(0.7, Enum.EasingStyle.Linear)
         local moveTweenGoal = {CFrame = CFrame.new(targetPosition)}
         local moveTween = TweenService:Create(primaryPart, moveTweenInfo, moveTweenGoal)
-        moveTween:Play()
 
         if humanoid then
-            humanoid.WalkSpeed = 0
-            humanoid.JumpPower = 0
+            humanoid.WalkSpeed = 15
+            humanoid.JumpPower = 50
             humanoid.AutoRotate = false
             humanoid.PlatformStand = true
         end
