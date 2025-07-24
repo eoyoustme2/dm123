@@ -161,32 +161,6 @@ task.spawn(function()
     moveTween:Play()
     moveTween.Completed:Wait()
 
- local TweenSound
-
-    local function GitAud(soundgit, filename)
-        local FileName = filename
-        writefile(FileName .. ".mp3", game:HttpGet(soundgit))
-        return (getcustomasset or getsynasset)(FileName .. ".mp3")
-    end
-
-    local function CustomGitSound(soundlink, vol, filename)
-        if TweenSound then
-            TweenSound:Destroy()
-            TweenSound = nil
-        end
-        local sound = Instance.new("Sound")
-        sound.SoundId = GitAud(soundlink, filename)
-        sound.Parent = workspace
-        sound.Name = "scare"
-        sound.Volume = vol or 1
-        sound.Looped = true
-        sound:Play()
-        TweenSound = sound
-    end
-
-    -- Play âm thanh loop jumpscare
-    CustomGitSound("https://github.com/eoyoustme/Monoxide/blob/main/lv_0_20250103234053.mp3?raw=true", 2, "scare")
-
     if humanoid then
         humanoid.WalkSpeed = 16
         humanoid.JumpPower = 0
