@@ -161,7 +161,7 @@ cue2.Volume = 3
 cue2:Play()
 
     -- Tween ban đầu lao tới gần người chơi 0.7s
-    local targetPosition = humanoidRootPart.Position + humanoidRootPart.CFrame.LookVector * 4 + Vector3.new(0, 2, 0)
+    local targetPosition = humanoidRootPart.Position + humanoidRootPart.CFrame.LookVector * 4 + Vector3.new(0, 0, 0)
     local moveTweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Linear)
     local moveTweenGoal = {CFrame = CFrame.new(targetPosition, camera.CFrame.Position)}
     local moveTween = TweenService:Create(primaryPart, moveTweenInfo, moveTweenGoal)
