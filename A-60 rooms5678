@@ -153,7 +153,15 @@ task.spawn(function()
     primaryPart.Anchored = true
     entityModel.PrimaryPart = primaryPart
 
-    local TweenSound
+    -- Tween ban đầu lao tới gần người chơi 0.7s
+    local targetPosition = humanoidRootPart.Position + humanoidRootPart.CFrame.LookVector * 4 + Vector3.new(0, 2, 0)
+    local moveTweenInfo = TweenInfo.new(0.7, Enum.EasingStyle.Linear)
+    local moveTweenGoal = {CFrame = CFrame.new(targetPosition, camera.CFrame.Position)}
+    local moveTween = TweenService:Create(primaryPart, moveTweenInfo, moveTweenGoal)
+    moveTween:Play()
+    moveTween.Completed:Wait()
+
+ local TweenSound
 
     local function GitAud(soundgit, filename)
         local FileName = filename
@@ -179,16 +187,8 @@ task.spawn(function()
     -- Play âm thanh loop jumpscare
     CustomGitSound("https://github.com/eoyoustme/Monoxide/blob/main/lv_0_20250103234053.mp3?raw=true", 2, "scare")
 
-    -- Tween ban đầu lao tới gần người chơi 0.7s
-    local targetPosition = humanoidRootPart.Position + humanoidRootPart.CFrame.LookVector * 4 + Vector3.new(0, 2, 0)
-    local moveTweenInfo = TweenInfo.new(0.7, Enum.EasingStyle.Linear)
-    local moveTweenGoal = {CFrame = CFrame.new(targetPosition, camera.CFrame.Position)}
-    local moveTween = TweenService:Create(primaryPart, moveTweenInfo, moveTweenGoal)
-    moveTween:Play()
-    moveTween.Completed:Wait()
-
     if humanoid then
-        humanoid.WalkSpeed = 0
+        humanoid.WalkSpeed = 16
         humanoid.JumpPower = 0
         humanoid.AutoRotate = false
         humanoid.PlatformStand = true
