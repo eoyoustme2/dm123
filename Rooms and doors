@@ -18,7 +18,7 @@ pcall(function()
 end)
 
 local entityList = {
-    {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-60%20(rooms%20and%20doors)", delay = 60},
+    {url = "https://raw.githubusercontent.com/eoyoustme2/dm123/refs/heads/main/A-60%20rooms1", delay = 60},
     {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-60%20Prime", delay = 110},
     {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-120", delay = 180},
     {url = "https://raw.githubusercontent.com/eoyoustme/Monoxide/refs/heads/main/A-200", delay = 300},
