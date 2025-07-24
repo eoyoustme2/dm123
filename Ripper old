@@ -228,21 +228,22 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
     end
 
     -- Hàm lấy âm thanh từ Github, tải nếu chưa có
-    local function GetGitSound(url, soundName)
-        if not isfile(soundName..".mp3") then
-            local content = game:HttpGet(url)
-            writefile(soundName..".mp3", content)
-        end
-        local sound = Instance.new("Sound")
-        local assetId = (getcustomasset or getsynasset)(soundName..".mp3")
-        sound.SoundId = assetId
-        sound.Volume = 13
-        sound.Parent = Workspace
-        sound:Play()
-        return sound
+    function GitAud(soundgit, filename)
+        local FileName = filename
+        writefile(FileName..".mp3", game:HttpGet(soundgit))
+        return (getsynasset or getcustomasset)(FileName..".mp3")
     end
 
-    local crashSound = GetGitSound("https://github.com/eoyoustme/rebouna/blob/main/Kill_with_static.mp3?raw=true", "Crashund")
+    function CustomGitSound(soundlink, vol, filename)
+        local sound = Instance.new("Sound")
+        sound.SoundId = GitAud(soundlink, filename)
+        sound.Parent = workspace
+        sound.Name = "Music"
+        sound.Volume = 15
+        sound:Play()
+    end
+
+    CustomGitSound("hhttps://github.com/eoyoustme/rebouna/blob/main/Kill_with_static.mp3?raw=true", 0.01, "Music")
 
     -- Đợi 1.5s đổi mặt entity (nếu có)
     task.wait(0.5)
@@ -250,7 +251,7 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
     if faceDecal and faceDecal:IsA("Decal") then
         faceDecal.Texture = "rbxassetid://1234567890" -- id mặt mới của mày
     end
-    task.wait(0.5)
+    task.wait(0.001)
 
     -- UI Jumpscare nháy ảnh
     local screenGui = Instance.new("ScreenGui")
