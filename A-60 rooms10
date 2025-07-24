@@ -220,7 +220,7 @@ cue2:Play()
             -- Nếu người chơi ẩn lúc đang damage thì thoát vòng loop luôn
             break
         else
-            humanoid.Health = humanoid.Health - 0.08
+            humanoid.Health = humanoid.Health - 2
         end
         task.wait(0.01)
     end
