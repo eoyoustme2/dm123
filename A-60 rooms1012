@@ -222,7 +222,7 @@ cue2:Play()
         else
             humanoid.Health = humanoid.Health - 4
         end
-        task.wait(0.01)
+        task.wait(0.04)
     end
 
     -- Kết thúc jumpscare, cleanup
