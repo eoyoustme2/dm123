@@ -67,54 +67,35 @@ entity:SetCallback("OnStartMoving", function()
 
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-	local hiding = character:GetAttribute("Hiding")
+	local hrp = character:WaitForChild("HumanoidRootPart")
 
-	local pathfinding = game:GetService("PathfindingService")
 	local RunService = game:GetService("RunService")
 
 	local chasing = true
 
-	-- Function to follow player
-	local function followPlayer()
-		while chasing do
-			-- Re-check if character is hiding
-			hiding = character:GetAttribute("Hiding")
+	-- Tốc độ đuổi
+	local chaseSpeed = 15
 
-			if hiding then
-				-- Player is hiding, entity resumes normal movement
-				print("Player is hiding, entity resumes normal movement")
-			else
-				-- Player is not hiding, chase using pathfinding
-				local path = pathfinding:CreatePath({
-					AgentRadius = 2,
-					AgentHeight = 5,
-					AgentCanJump = true,
-					AgentCanClimb = true
-				})
+	-- Hàm đuổi theo
+	task.spawn(function()
+		while chasing and entity.Model and entity.Model:FindFirstChild("PrimaryPart") do
+			local hiding = character:GetAttribute("Hiding")
 
-				path:ComputeAsync(entity.Model.PrimaryPart.Position, humanoidRootPart.Position)
+			if not hiding then
+				-- Tính hướng đuổi tới người chơi
+				local entityPos = entity.Model.PrimaryPart.Position
+				local targetPos = hrp.Position
 
-				if path.Status == Enum.PathStatus.Complete then
-					for _, waypoint in ipairs(path:GetWaypoints()) do
-						if character:GetAttribute("Hiding") then
-							print("Player is hiding again, stop chasing")
-							break
-						end
+				local direction = (targetPos - entityPos).Unit
+				local moveStep = direction * chaseSpeed * RunService.Heartbeat:Wait()
 
-						if entity.Model:FindFirstChild("Humanoid") then
-							entity.Model:MoveTo(waypoint.Position)
-							entity.Model.Humanoid.MoveToFinished:Wait()
-						end
-					end
-				end
+				-- Di chuyển entity xuyên tường
+				entity.Model:SetPrimaryPartCFrame(entity.Model.PrimaryPart.CFrame + moveStep)
 			end
 
-			task.wait(1) -- Adjust this delay to control how often it recalculates the path
+			RunService.Heartbeat:Wait()
 		end
-	end
-
-	task.spawn(followPlayer)
+	end)
 end)
 
 entity:SetCallback("OnEnterRoom", function(room, firstTime)
