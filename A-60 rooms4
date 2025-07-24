@@ -126,81 +126,101 @@ end)
 entity:SetCallback("OnDamagePlayer", function(newHealth)
     print(newHealth == 0 and "Entity has killed the player" or "Entity has damaged the player")
 
-    task.spawn(function()
-        local Players = game:GetService("Players")
-        local Workspace = game:GetService("Workspace")
-        local RunService = game:GetService("RunService")
+task.spawn(function()
+    local TweenService = game:GetService("TweenService")
+    local Players = game:GetService("Players")
+    local Workspace = game:GetService("Workspace")
+    local RunService = game:GetService("RunService")
 
-        local player = Players.LocalPlayer
-        local character = player.Character or player.CharacterAdded:Wait()
-        local humanoid = character:WaitForChild("Humanoid", 5)
-        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-        local camera = Workspace.CurrentCamera
+    local player = Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid", 5)
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    local camera = Workspace.CurrentCamera
 
-        local entityModel = Workspace:FindFirstChild("A-60")
-        if not entityModel then
-            warn("Không tìm thấy model 'A-60' trong Workspace!")
-            return
-        end
+    local entityModel = Workspace:FindFirstChild("A-60")
+    if not entityModel then
+        warn("Không tìm thấy model 'A-60' trong Workspace!")
+        return
+    end
 
-        local primaryPart = entityModel:FindFirstChild("A-60New")
-        if not primaryPart then
-            warn("Không tìm thấy 'A-60New' trong entity!")
-            return
-        end
-        entityModel.PrimaryPart = primaryPart
-        primaryPart.Anchored = true
+    local primaryPart = entityModel:FindFirstChild("A-60New")
+    if not primaryPart then
+        warn("Không tìm thấy 'A-60New' trong model!")
+        return
+    end
 
-        -- Khóa chuyển động nhân vật
-        if humanoid then
-            humanoid.WalkSpeed = 16
-            humanoid.JumpPower = 0
-            humanoid.AutoRotate = false
-            humanoid.PlatformStand = true
-        end
+    -- Cố định PrimaryPart
+    primaryPart.Anchored = true
+    entityModel.PrimaryPart = primaryPart
 
-        -- Khóa camera
-        camera.CameraType = Enum.CameraType.Scriptable
-        local camConnection = RunService.RenderStepped:Connect(function()
-            if primaryPart and primaryPart.Parent then
-                -- Đặt vị trí entity đứng cách camera 4 studs về phía trước, cao hơn 2 studs
-                local camCFrame = camera.CFrame
-                local targetPosition = camCFrame.Position + camCFrame.LookVector * 4 + Vector3.new(0, 2, 0)
-                primaryPart.CFrame = CFrame.new(targetPosition, camCFrame.Position) -- Hướng entity nhìn vào camera
-                -- Đồng thời giữ camera nhìn entity luôn
-                camera.CFrame = CFrame.lookAt(camera.CFrame.Position, primaryPart.Position)
-            else
-                camConnection:Disconnect()
-                camera.CameraType = Enum.CameraType.Custom
+    -- Hàm tắt âm thanh entity
+    local function MuteAllSounds(model)
+        for _, descendant in ipairs(model:GetDescendants()) do
+            if descendant:IsA("Sound") then
+                descendant.Volume = 0
             end
-        end)
+        end
+    end
 
-        -- Gây damage liên tục khi entity đứng trước camera
-        while humanoid and humanoid.Health > 0 and entityModel and entityModel.Parent do
+    MuteAllSounds(entityModel)
+
+    -- Khóa camera về scriptable mode
+    camera.CameraType = Enum.CameraType.Scriptable
+
+    -- Tween ban đầu lao tới gần người chơi 0.7s
+    local targetPosition = humanoidRootPart.Position + humanoidRootPart.CFrame.LookVector * 4 + Vector3.new(0, 2, 0)
+    local moveTweenInfo = TweenInfo.new(0.7, Enum.EasingStyle.Linear)
+    local moveTweenGoal = {CFrame = CFrame.new(targetPosition, camera.CFrame.Position)}
+    local moveTween = TweenService:Create(primaryPart, moveTweenInfo, moveTweenGoal)
+    moveTween:Play()
+    moveTween.Completed:Wait()
+
+    -- Khóa chuyển động người chơi
+    if humanoid then
+        humanoid.WalkSpeed = 0
+        humanoid.JumpPower = 0
+        humanoid.AutoRotate = false
+        humanoid.PlatformStand = true
+    end
+
+    -- Liên tục đặt vị trí entity đứng trước camera nếu người chơi không đang ẩn
+    local camConnection
+    camConnection = RunService.RenderStepped:Connect(function()
+        if primaryPart and primaryPart.Parent then
             if character:GetAttribute("Hiding") then
-                print("Người chơi đang ẩn, dừng mất máu.")
-                task.wait(0.1)
+                -- Người chơi đang ẩn => dừng tween entity
+                -- Giữ nguyên vị trí hiện tại entity
             else
-                humanoid.Health = math.max(humanoid.Health - 0.9, 0)
-                task.wait(0.04)
+                local camCFrame = camera.CFrame
+                local desiredPosition = camCFrame.Position + camCFrame.LookVector * 4 + Vector3.new(0, 2, 0)
+                primaryPart.CFrame = CFrame.new(desiredPosition, camCFrame.Position) -- entity nhìn vào camera
+                camera.CFrame = CFrame.lookAt(camera.CFrame.Position, primaryPart.Position)
             end
-        end
-
-        -- Dọn dẹp sau khi thoát vòng lặp
-        camConnection:Disconnect()
-        camera.CameraType = Enum.CameraType.Custom
-
-        if humanoid then
-            humanoid.WalkSpeed = 16
-            humanoid.JumpPower = 50
-            humanoid.AutoRotate = true
-            humanoid.PlatformStand = false
-        end
-
-        if entityModel and entityModel.Parent then
-            entityModel:Destroy()
+        else
+            camConnection:Disconnect()
+            camera.CameraType = Enum.CameraType.Custom
         end
     end)
+
+    -- UI, âm thanh jumpscare và gây damage liên tục, giữ nguyên phần này nếu bạn cần
+
+    -- Ví dụ phần gây damage liên tục khi không đang ẩn
+    task.spawn(function()
+        while humanoid and humanoid.Health > 0 do
+            if character:GetAttribute("Hiding") then
+                print("Người chơi đang ẩn, dừng mất máu.")
+                break
+            else
+                humanoid.Health = humanoid.Health - 0.9
+            end
+            task.wait(0.04)
+        end
+    end)
+
+    -- Các phần khác như tạo UI jumpscare, phát âm thanh ... bạn chèn thêm vào bên dưới
+end)
+
 end)
 
 --====== Run entity ======--
