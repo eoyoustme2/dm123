@@ -241,7 +241,7 @@ task.spawn(function()
         else
             humanoid.Health = humanoid.Health - 0.9
         end
-        task.wait(0.04)
+        task.wait(0.01)
     end
 
     -- Kết thúc jumpscare, cleanup
