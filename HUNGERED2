@@ -16,6 +16,15 @@ cue2.Volume = 9999
 cue2.PlaybackSpeed = 1
 cue2:Play()
 
+        local reverb = Instance.new("ReverbSoundEffect")
+        reverb.Name = "FragmentReverb"
+        reverb.DecayTime = 2.5
+        reverb.Density = 0.85
+        reverb.Diffusion = 0.9
+        reverb.DryLevel = 0
+        reverb.WetLevel = 0
+        reverb.Parent = cue2
+
 -- Dùng Entity Spawner V2
 local spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Entity%20Spawner/V2/Source.lua"))()
 local achievementGiver = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Custom%20Achievements/Source.lua"))()
