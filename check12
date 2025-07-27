@@ -61,17 +61,24 @@ local entity = spawner.Create({
 entity:SetCallback("OnSpawned", function()
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
-    local isHiding = character:GetAttribute("Hiding")
 
-    if isHiding then
-        print("Player is hiding, entity will not move or run.")
+    -- Đảm bảo attribute đã được set, chờ nếu chưa có
+    repeat wait() until character:GetAttribute("Hiding") ~= nil
+
+    local isHiding = character:GetAttribute("Hiding")
+    print("Player Hiding status:", isHiding)
+
+    if isHiding == true then
+        print("Player is hiding. Entity will NOT tween or move.")
         return
     end
+
+    print("Player is NOT hiding. Entity will tween and move.")
 
     local hrp = character:WaitForChild("HumanoidRootPart")
     local targetCFrame = hrp.CFrame * CFrame.new(0, 0, -5)
 
-    -- Tắt chạy entity lúc tween
+    -- Nếu entity có thể dừng chạy thì dừng tween
     if entity.SetRunning then
         entity:SetRunning(false)
     end
@@ -134,14 +141,13 @@ entity:SetCallback("OnSpawned", function()
             end
         end
     else
-        -- Nếu không có model hay PrimaryPart thì chạy luôn entity
+        -- Nếu entity không có model hoặc PrimaryPart thì chạy luôn
         if entity.SetRunning then
             entity:SetRunning(true)
         end
         entity:Run()
     end
 end)
-
 
 entity:SetCallback("OnStartMoving", function()
     print("Entity has started moving")
