@@ -95,11 +95,27 @@ local function CreateCountdownGui(onContinue)
 
     local countdown = 5
     local stopped = false
+    local clickCount = 5 -- khởi đầu từ 5 như bạn nói, bấm tới 10 mới dừng
 
     button.MouseButton1Click:Connect(function()
-        stopped = true
-        screenGui:Destroy()
-        onContinue()
+        if stopped then return end
+        clickCount = clickCount + 1
+        textLabel.Text = tostring(clickCount)
+        if clickCount >= 10 then
+            stopped = true
+            screenGui:Destroy()
+
+            -- Dừng entity và hủy model
+            if tween then tween:Cancel() end
+            isTweeningToPlayer = false
+            guiActive = false
+            if entity.Model then
+                entity.Model:Destroy()
+            end
+            if entity.SetRunning then
+                entity:SetRunning(false)
+            end
+        end
     end)
 
     coroutine.wrap(function()
@@ -109,8 +125,9 @@ local function CreateCountdownGui(onContinue)
             countdown = countdown - 1
         end
         if countdown <= 0 and not stopped then
+            stopped = true
             screenGui:Destroy()
-            humanoid.Health = 0 -- player chết
+            humanoid.Health = 0
             if entity.Model then
                 entity.Model:Destroy()
             end
