@@ -1,0 +1,363 @@
+---====== Load spawner ======---
+
+local spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Entity%20Spawner/V2/Source.lua"))()
+
+---====== Create entity ======---
+
+local entity = spawner.Create({
+    Entity = {
+        Name = "B-60",
+        Asset = "rbxassetid://82490794768053",
+        HeightOffset = 4
+    },
+    Lights = {
+        Flicker = {
+            Enabled = false,
+            Duration = 1
+        },
+        Shatter = true,
+        Repair = false
+    },
+    Earthquake = {
+        Enabled = false
+    },
+    CameraShake = {
+        Enabled = true,
+        Range = 100,
+        Values = {51, 40, 0.1, 0.1} -- Magnitude, Roughness, FadeIn, FadeOut
+    },
+    Movement = {
+        Speed = 525,
+        Delay = 7,
+        Reversed = false
+    },
+    Rebounding = {
+        Enabled = false,
+        Type = "Ambush", -- "Blitz"
+        Min = 4,
+        Max = 4,
+        Delay = 0.2
+    },
+    Damage = {
+        Enabled = true,
+        Range = 40,
+        Amount = 125
+    },
+    Crucifixion = {
+        Enabled = true,
+        Range = 40,
+        Resist = false,
+        Break = true
+    },
+    Death = {
+        Type = "Guiding", -- "Curious"
+        Hints = {"You die to B-60", "He is other version of B-60", "he can rebound", "is hard to survive he"},
+        Cause = ""
+    }
+})
+
+---====== Debug entity ======---
+
+entity:SetCallback("OnSpawned", function()
+    print("Entity has spawned")
+    local cue2 = Instance.new("Sound")
+    cue2.Parent = game.Workspace
+    cue2.Name = "Spawn"
+    cue2.SoundId = "rbxassetid://6891548543"
+    cue2.Volume = 10
+    cue2.PlaybackSpeed = 0.7
+    cue2:Play()
+
+    local CameraShaker = require(game.ReplicatedStorage.CameraShaker)
+    local camara = game.Workspace.CurrentCamera
+    local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
+        camara.CFrame = camara.CFrame * shakeCf
+    end)
+    camShake:Start()
+    camShake:ShakeOnce(20,3,0.1,6,2,0.5)
+
+    game.Lighting.MainColorCorrection.TintColor = Color3.fromRGB(255, 255, 255)
+    game.Lighting.MainColorCorrection.Contrast = 0.1
+    local tween = game:GetService("TweenService")
+    tween:Create(game.Lighting.MainColorCorrection, TweenInfo.new(2.5), {Contrast = 0}):Play()
+    local TweenService = game:GetService("TweenService")
+    local TW = TweenService:Create(game.Lighting.MainColorCorrection, TweenInfo.new(5),{TintColor = Color3.fromRGB(0, 0, 255)})
+    TW:Play()
+    wait(0)
+
+    -- *** PHẦN MỚI: Kiểm tra nếu player đang ẩn (Hiding) thì xử lý thử thách sinh tồn ***
+
+    local player = game.Players.LocalPlayer
+    local char = player.Character or player.CharacterAdded:Wait()
+
+    if char:GetAttribute("Hiding") then
+        print("Player đang trốn, bắt đầu thử thách sinh tồn!")
+
+        -- Dịch chuyển entity cách camera 5 studs về phía trước
+        local cam = workspace.CurrentCamera
+        local frontPos = cam.CFrame.Position + cam.CFrame.LookVector * 5
+        if entity.Model and entity.Model.PrimaryPart then
+            entity.Model:SetPrimaryPartCFrame(CFrame.new(frontPos))
+        end
+
+        -- Tạo GUI đếm ngược và nút bấm
+        local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+        gui.Name = "SurvivalChallenge"
+        gui.ResetOnSpawn = false
+
+        local countdownText = Instance.new("TextLabel", gui)
+        countdownText.Size = UDim2.new(0.3, 0, 0.2, 0)
+        countdownText.Position = UDim2.new(0.35, 0, 0.35, 0)
+        countdownText.TextScaled = true
+        countdownText.Text = "5"
+        countdownText.TextColor3 = Color3.new(1, 0, 0)
+        countdownText.BackgroundTransparency = 1
+        countdownText.Font = Enum.Font.FredokaOne
+
+        local clickButton = Instance.new("TextButton", gui)
+        clickButton.Size = UDim2.new(0.3, 0, 0.1, 0)
+        clickButton.Position = UDim2.new(0.35, 0, 0.6, 0)
+        clickButton.Text = "Click to Survive"
+        clickButton.TextScaled = true
+        clickButton.BackgroundColor3 = Color3.new(0, 0, 0)
+        clickButton.TextColor3 = Color3.new(1, 1, 1)
+
+        local counter = 0
+        clickButton.MouseButton1Click:Connect(function()
+            counter += 1
+            print("Clicked:", counter)
+        end)
+
+        local count = 5
+        for i = 5, 0, -1 do
+            countdownText.Text = tostring(i)
+            task.wait(1)
+            count -= 1
+
+            if count == 0 and counter < 10 then
+                gui:Destroy()
+                print("Player thất bại trong thử thách, bị giết.")
+                local humanoid = char:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.Health = 0
+                end
+            elseif counter >= 10 then
+                print("Người chơi đã sống sót!")
+                gui:Destroy()
+                entity:Destroy()
+                break
+            end
+        end
+    end
+end)
+
+entity:SetCallback("OnStartMoving", function()
+    print("Entity has started moving")
+end)
+
+entity:SetCallback("OnEnterRoom", function(room, firstTime)
+    if firstTime == true then
+        print("Entity has entered room: ".. room.Name.. " for the first time")
+    else
+        print("Entity has entered room: ".. room.Name.. " again")
+    end
+end)
+
+entity:SetCallback("OnLookAt", function(lineOfSight)
+    if lineOfSight == true then
+        print("Player is looking at entity")
+    else
+        print("Player view is obstructed by something")
+    end
+end)
+
+entity:SetCallback("OnRebounding", function(startOfRebound)
+    if startOfRebound == true then
+        print("Entity has started rebounding")
+    else
+        print("Entity has finished rebounding")
+    end
+end)
+
+entity:SetCallback("OnDespawning", function()
+    print("Entity is despawning")
+    wait(3)
+    game.Lighting.MainColorCorrection.TintColor = Color3.fromRGB(0, 0, 255)
+    game.Lighting.MainColorCorrection.Contrast = 0.1
+    local tween = game:GetService("TweenService")
+    tween:Create(game.Lighting.MainColorCorrection, TweenInfo.new(2.5), {Contrast = 0}):Play()
+    local TweenService = game:GetService("TweenService")
+    local TW = TweenService:Create(game.Lighting.MainColorCorrection, TweenInfo.new(5),{TintColor = Color3.fromRGB(255, 255, 255)})
+    TW:Play()
+
+    ---====== Load achievement giver ======---
+    local achievementGiver = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Custom%20Achievements/Source.lua"))()
+
+    ---====== Display achievement ======---
+    achievementGiver({
+        Title = "smile of hell",
+        Desc = "shake violently",
+        Reason = "Encounter B-60",
+        Image = "rbxassetid://106971831658765"
+    })
+end)
+
+entity:SetCallback("OnDespawned", function()
+    print("Entity has despawned")
+end)
+
+entity:SetCallback("OnDamagePlayer", function(newHealth)
+    print("Entity đã gây sát thương. Máu còn lại:", newHealth)
+
+    local player = game.Players.LocalPlayer
+    local playerGui = player:WaitForChild("PlayerGui")
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+    local camera = workspace.CurrentCamera
+
+    -- Bắt đầu Jumpscare nếu player chết
+    if newHealth <= 0 then
+        local screenGui = Instance.new("ScreenGui")
+        screenGui.Parent = playerGui
+        screenGui.Name = "ScreenGui"
+        screenGui.IgnoreGuiInset = true
+
+        local stopEffects = false
+        local doneFading = false
+
+        -- Âm thanh jumpscare
+        local killSound = Instance.new("Sound")
+        killSound.Parent = workspace
+        killSound.PlaybackSpeed = 1
+        killSound.SoundId = "rbxassetid://18459521002"
+        killSound.Name = "Dear god death sound chat"
+        killSound.Volume = 10
+        killSound.Looped = true
+
+        -- Hiệu ứng âm thanh
+        Instance.new("FlangeSoundEffect", killSound).Rate = 0.2
+        Instance.new("TremoloSoundEffect", killSound).Frequency = 1
+        Instance.new("PitchShiftSoundEffect", killSound).Octave = 1
+        Instance.new("DistortionSoundEffect", killSound).Level = 0.2
+
+        -- UI
+        local background = Instance.new("ImageLabel", screenGui)
+        background.Size = UDim2.new(1, 0, 1, 0)
+        background.Image = "rbxassetid://1712510813"
+        background.ImageTransparency = 0.5
+        background.BackgroundColor3 = Color3.new(0, 0, 0)
+        background.BackgroundTransparency = 0
+
+        local face = Instance.new("ImageLabel", screenGui)
+        face.AnchorPoint = Vector2.new(0.5, 0.5)
+        face.Position = UDim2.new(0.5, 0, 0.589, 0)
+        face.Size = UDim2.new(0, 300, 0, 300)
+        face.Image = "rbxassetid://11395249132"
+        face.BackgroundTransparency = 1
+
+        local text = Instance.new("ImageLabel", screenGui)
+        text.AnchorPoint = Vector2.new(0.5, 0.5)
+        text.Position = UDim2.new(0.5, 0, 0.5, 0)
+        text.Size = UDim2.new(0, 150, 0, 150)
+        text.Image = "rbxassetid://99132041298170"
+        text.BackgroundTransparency = 1
+
+        killSound:Play()
+
+        -- Camera zoom
+        local startFov = camera.FieldOfView
+        local zoomFov = 60
+        local zoomDuration = 0.7
+
+        camera.CameraType = Enum.CameraType.Scriptable
+        game:GetService("TweenService"):Create(camera, TweenInfo.new(zoomDuration), {FieldOfView = zoomFov}):Play()
+
+        game:GetService("TweenService"):Create(face, TweenInfo.new(zoomDuration), {
+            Size = UDim2.new(0, 1200, 0, 1200),
+            Position = UDim2.new(0.5, 0, 0.5, 0)
+        }):Play()
+
+        -- Jumpscare Effects
+        task.spawn(function()
+            while not stopEffects do
+                background.ImageTransparency = 0.3
+                background.BackgroundTransparency = 0
+                task.wait(0.1)
+                background.ImageTransparency = 0
+                background.BackgroundTransparency = 0.3
+                task.wait(0.1)
+            end
+        end)
+
+        task.spawn(function()
+            while not stopEffects do
+                background.Image = "rbxassetid://131073231978514"
+                task.wait(0.0589)
+                background.Image = "rbxassetid://105841646930424"
+                task.wait(0.0589)
+            end
+        end)
+
+        task.spawn(function()
+            while not stopEffects do
+                face.Rotation = 10
+                face.Image = "rbxassetid://121035342525244"
+                task.wait(0.0589)
+                face.Rotation = -10
+                task.wait(0.0589)
+            end
+        end)
+
+        task.spawn(function()
+            while not stopEffects do
+                text.Image = "rbxassetid://88490592395124"
+                task.wait(0.0589)
+                text.Image = "rbxassetid://99132041298170"
+                task.wait(0.0589)
+            end
+        end)
+
+        task.spawn(function()
+            while not stopEffects do
+                text.Position = UDim2.new(math.random(), 0, math.random(), 0)
+                task.wait(0.05)
+            end
+        end)
+
+        task.spawn(function()
+            while not stopEffects do
+                text.ImageTransparency = 0
+                task.wait(0.1)
+                text.ImageTransparency = 1
+                task.wait(0.1)
+            end
+        end)
+
+        -- Đợi và fade out
+        task.wait(zoomDuration)
+        stopEffects = true
+        killSound:Stop()
+
+        task.spawn(function()
+            while not doneFading do
+                face.ImageTransparency = math.min(face.ImageTransparency + 0.1, 1)
+                text.ImageTransparency = math.min(text.ImageTransparency + 0.1, 1)
+                background.ImageTransparency = math.min(background.ImageTransparency + 0.1, 1)
+                background.BackgroundTransparency = math.min(background.BackgroundTransparency + 0.1, 1)
+                if face.ImageTransparency >= 1 then
+                    doneFading = true
+                end
+                task.wait(0.05)
+            end
+            screenGui:Destroy()
+        end)
+
+        task.wait(0.4)
+        camera.CameraType = Enum.CameraType.Custom
+        camera.FieldOfView = startFov
+    end
+end)
+
+---====== Run entity ======---
+
+entity:Run()
