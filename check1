@@ -59,97 +59,89 @@ local entity = spawner.Create({
 ---====== Debug entity ======---
 
 entity:SetCallback("OnSpawned", function()
-    print("Entity has spawned")
-    local cue2 = Instance.new("Sound")
-    cue2.Parent = game.Workspace
-    cue2.Name = "Spawn"
-    cue2.SoundId = "rbxassetid://6891548543"
-    cue2.Volume = 10
-    cue2.PlaybackSpeed = 0.7
-    cue2:Play()
-
-    local CameraShaker = require(game.ReplicatedStorage.CameraShaker)
-    local camara = game.Workspace.CurrentCamera
-    local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
-        camara.CFrame = camara.CFrame * shakeCf
-    end)
-    camShake:Start()
-    camShake:ShakeOnce(20,3,0.1,6,2,0.5)
-
-    game.Lighting.MainColorCorrection.TintColor = Color3.fromRGB(255, 255, 255)
-    game.Lighting.MainColorCorrection.Contrast = 0.1
-    local tween = game:GetService("TweenService")
-    tween:Create(game.Lighting.MainColorCorrection, TweenInfo.new(2.5), {Contrast = 0}):Play()
-    local TweenService = game:GetService("TweenService")
-    local TW = TweenService:Create(game.Lighting.MainColorCorrection, TweenInfo.new(5),{TintColor = Color3.fromRGB(0, 0, 255)})
-    TW:Play()
-    wait(0)
-
-    -- *** PHẦN MỚI: Kiểm tra nếu player đang ẩn (Hiding) thì xử lý thử thách sinh tồn ***
-
     local player = game.Players.LocalPlayer
-    local char = player.Character or player.CharacterAdded:Wait()
+    local character = player.Character or player.CharacterAdded:Wait()
+    local isHiding = character:GetAttribute("Hiding")
 
-    if char:GetAttribute("Hiding") then
-        print("Player đang trốn, bắt đầu thử thách sinh tồn!")
+    if isHiding then
+        print("Player is hiding, entity will not move or run.")
+        return
+    end
 
-        -- Dịch chuyển entity cách camera 5 studs về phía trước
-        local cam = workspace.CurrentCamera
-        local frontPos = cam.CFrame.Position + cam.CFrame.LookVector * 5
-        if entity.Model and entity.Model.PrimaryPart then
-            entity.Model:SetPrimaryPartCFrame(CFrame.new(frontPos))
-        end
+    local hrp = character:WaitForChild("HumanoidRootPart")
+    local targetCFrame = hrp.CFrame * CFrame.new(0, 0, -5)
 
-        -- Tạo GUI đếm ngược và nút bấm
-        local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-        gui.Name = "SurvivalChallenge"
-        gui.ResetOnSpawn = false
+    -- Tắt chạy entity lúc tween
+    if entity.SetRunning then
+        entity:SetRunning(false)
+    end
 
-        local countdownText = Instance.new("TextLabel", gui)
-        countdownText.Size = UDim2.new(0.3, 0, 0.2, 0)
-        countdownText.Position = UDim2.new(0.35, 0, 0.35, 0)
-        countdownText.TextScaled = true
-        countdownText.Text = "5"
-        countdownText.TextColor3 = Color3.new(1, 0, 0)
-        countdownText.BackgroundTransparency = 1
-        countdownText.Font = Enum.Font.FredokaOne
+    if entity.Model and entity.Model.PrimaryPart then
+        local TweenService = game:GetService("TweenService")
+        local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(entity.Model.PrimaryPart, tweenInfo, {CFrame = targetCFrame})
+        tween:Play()
 
-        local clickButton = Instance.new("TextButton", gui)
-        clickButton.Size = UDim2.new(0.3, 0, 0.1, 0)
-        clickButton.Position = UDim2.new(0.35, 0, 0.6, 0)
-        clickButton.Text = "Click to Survive"
-        clickButton.TextScaled = true
-        clickButton.BackgroundColor3 = Color3.new(0, 0, 0)
-        clickButton.TextColor3 = Color3.new(1, 1, 1)
+        local playerGui = player:WaitForChild("PlayerGui")
+        local screenGui = Instance.new("ScreenGui", playerGui)
+        screenGui.Name = "CountdownGui"
+        screenGui.IgnoreGuiInset = true
 
-        local counter = 0
-        clickButton.MouseButton1Click:Connect(function()
-            counter += 1
-            print("Clicked:", counter)
+        local textLabel = Instance.new("TextLabel", screenGui)
+        textLabel.Size = UDim2.new(0, 150, 0, 150)
+        textLabel.Position = UDim2.new(0.5, -75, 0.4, 0)
+        textLabel.BackgroundTransparency = 0.5
+        textLabel.BackgroundColor3 = Color3.new(0,0,0)
+        textLabel.TextColor3 = Color3.new(1,1,1)
+        textLabel.Font = Enum.Font.SourceSansBold
+        textLabel.TextScaled = true
+        textLabel.Text = "5"
+
+        local button = Instance.new("TextButton", screenGui)
+        button.Size = UDim2.new(0, 150, 0, 50)
+        button.Position = UDim2.new(0.5, -75, 0.7, 0)
+        button.BackgroundColor3 = Color3.new(0, 0.5, 1)
+        button.TextColor3 = Color3.new(1, 1, 1)
+        button.Font = Enum.Font.SourceSansBold
+        button.TextScaled = true
+        button.Text = "Tiếp tục"
+
+        local countdown = 5
+        local stopped = false
+
+        button.MouseButton1Click:Connect(function()
+            stopped = true
+            tween:Cancel()
+            screenGui:Destroy()
+            if entity.SetRunning then
+                entity:SetRunning(true)
+            end
+            entity:Run()
         end)
 
-        local count = 5
-        for i = 5, 0, -1 do
-            countdownText.Text = tostring(i)
-            task.wait(1)
-            count -= 1
+        while countdown > 0 and tween.PlaybackState == Enum.PlaybackState.Playing do
+            if stopped then break end
+            textLabel.Text = tostring(countdown)
+            wait(1)
+            countdown = countdown - 1
+        end
 
-            if count == 0 and counter < 10 then
-                gui:Destroy()
-                print("Player thất bại trong thử thách, bị giết.")
-                local humanoid = char:FindFirstChildOfClass("Humanoid")
-                if humanoid then
-                    humanoid.Health = 0
-                end
-            elseif counter >= 10 then
-                print("Người chơi đã sống sót!")
-                gui:Destroy()
-                entity:Destroy()
-                break
+        if countdown <= 0 and not stopped then
+            screenGui:Destroy()
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.Health = 0
             end
         end
+    else
+        -- Nếu không có model hay PrimaryPart thì chạy luôn entity
+        if entity.SetRunning then
+            entity:SetRunning(true)
+        end
+        entity:Run()
     end
 end)
+
 
 entity:SetCallback("OnStartMoving", function()
     print("Entity has started moving")
