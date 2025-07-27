@@ -154,7 +154,6 @@ end
 
 entity:SetCallback("OnSpawned", function()
     print("Entity has spawned")
-wait(7)
 
     task.spawn(function()
         while entity.Model and entity.Model.Parent do
