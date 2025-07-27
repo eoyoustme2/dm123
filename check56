@@ -57,9 +57,6 @@ local entity = spawner.Create({
 })
 
 ---====== Debug entity ======---
-entity:SetCallback("OnSpawned", function()
-wait(7)
- 
 local TweenService = game:GetService("TweenService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
@@ -81,6 +78,22 @@ local function TweenToPlayer()
     if tween then tween:Cancel() end
     tween = TweenService:Create(primaryPart, moveTweenInfo, moveTweenGoal)
     tween:Play()
+end
+
+local function DestroyEntity()
+    if tween then tween:Cancel() end
+    isTweeningToPlayer = false
+    guiActive = false
+    if countdownGui then
+        countdownGui:Destroy()
+        countdownGui = nil
+    end
+    if entity.Model then
+        entity.Model:Destroy()
+    end
+    if entity.SetRunning then
+        entity:SetRunning(false)
+    end
 end
 
 local function CreateCountdownGui()
@@ -112,22 +125,6 @@ local function CreateCountdownGui()
 
     textLabel.Text = tostring(countdown)
 
-    local function DestroyEntity()
-        if tween then tween:Cancel() end
-        isTweeningToPlayer = false
-        guiActive = false
-        if countdownGui then
-            countdownGui:Destroy()
-            countdownGui = nil
-        end
-        if entity.Model then
-            entity.Model:Destroy()
-        end
-        if entity.SetRunning then
-            entity:SetRunning(false)
-        end
-    end
-
     button.MouseButton1Click:Connect(function()
         if stopped then return end
         clickCount = clickCount + 1
@@ -146,7 +143,6 @@ local function CreateCountdownGui()
         end
         if countdown <= 0 and not stopped then
             stopped = true
-            -- Player chết
             local humanoid = character:FindFirstChildOfClass("Humanoid")
             if humanoid then
                 humanoid.Health = 0
@@ -156,43 +152,41 @@ local function CreateCountdownGui()
     end)()
 end
 
-entity:SetCallback("OnUpdate", function()
-    if not entity.Model or not entity.Model.PrimaryPart then return end
+entity:SetCallback("OnSpawned", function()
+    print("Entity has spawned")
+wait(7)
 
-    local isHiding = character:GetAttribute("Hiding")
-
-    if isHiding then
-        if not isTweeningToPlayer then
-            isTweeningToPlayer = true
-            TweenToPlayer()
-
-            if not guiActive then
-                guiActive = true
-                if not countdownGui then
-                    CreateCountdownGui()
+    task.spawn(function()
+        while entity.Model and entity.Model.Parent do
+            local isHiding = character:GetAttribute("Hiding")
+            if isHiding then
+                if not isTweeningToPlayer then
+                    isTweeningToPlayer = true
+                    entity:SetRunning(false)  -- Dừng entity chạy bình thường
+                    TweenToPlayer()
+                    if not guiActive then
+                        guiActive = true
+                        if not countdownGui then
+                            CreateCountdownGui()
+                        end
+                    end
+                end
+            else
+                if isTweeningToPlayer then
+                    isTweeningToPlayer = false
+                    guiActive = false
+                    if tween then tween:Cancel() end
+                    if countdownGui then
+                        countdownGui:Destroy()
+                        countdownGui = nil
+                    end
+                    entity:SetRunning(true) -- Tiếp tục chạy bình thường
+                    entity:Run()
                 end
             end
+            wait(0.5)
         end
-    else
-        if isTweeningToPlayer then
-            isTweeningToPlayer = false
-            guiActive = false
-
-            if tween then tween:Cancel() end
-
-            if countdownGui then
-                countdownGui:Destroy()
-                countdownGui = nil
-            end
-
-            if entity.SetRunning then
-                entity:SetRunning(true)
-            end
-
-            entity:Run()
-        end
-    end
-end)
+    end)
 end)
 
 entity:SetCallback("OnStartMoving", function()
