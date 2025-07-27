@@ -57,7 +57,6 @@ local entity = spawner.Create({
 })
 
 ---====== Debug entity ======---
-
 entity:SetCallback("OnSpawned", function()
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
@@ -65,93 +64,81 @@ entity:SetCallback("OnSpawned", function()
     local hrp = character:WaitForChild("HumanoidRootPart")
     local TweenService = game:GetService("TweenService")
 
-    -- Đợi attribute Hiding đã được set (không nil)
+    -- Đợi attribute Hiding được set
     repeat wait() until character:GetAttribute("Hiding") ~= nil
-
     local isHiding = character:GetAttribute("Hiding")
-    print("Player Hiding status:", isHiding)
+    print("Player đang ẩn?", isHiding)
 
     if isHiding == true then
-        print("Player đang ẩn → entity đứng yên không di chuyển.")
-        if entity.SetRunning then
-            entity:SetRunning(false)
-        end
-        return -- Kết thúc luôn, entity không tween hay chạy
-    end
+        print("Player đang ẩn → entity tween tới player.")
 
-    print("Player không ẩn → entity tween tới player.")
+        if entity.Model and entity.Model.PrimaryPart then
+            local targetCFrame = hrp.CFrame * CFrame.new(0, 0, -5)
+            local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+            local tween = TweenService:Create(entity.Model.PrimaryPart, tweenInfo, {CFrame = targetCFrame})
+            tween:Play()
 
-    -- Dừng entity chạy (nếu có method)
-    if entity.SetRunning then
-        entity:SetRunning(false)
-    end
+            -- Tạo GUI đếm ngược + nút tiếp tục
+            local screenGui = Instance.new("ScreenGui", player.PlayerGui)
+            screenGui.Name = "CountdownGui"
+            screenGui.IgnoreGuiInset = true
 
-    -- Tween entity tới vị trí 5 stud trước player
-    local targetCFrame = hrp.CFrame * CFrame.new(0, 0, -5)
-    if entity.Model and entity.Model.PrimaryPart then
-        local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-        local tween = TweenService:Create(entity.Model.PrimaryPart, tweenInfo, {CFrame = targetCFrame})
-        tween:Play()
+            local textLabel = Instance.new("TextLabel", screenGui)
+            textLabel.Size = UDim2.new(0, 150, 0, 150)
+            textLabel.Position = UDim2.new(0.5, -75, 0.4, 0)
+            textLabel.BackgroundTransparency = 0.5
+            textLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+            textLabel.TextColor3 = Color3.new(1, 1, 1)
+            textLabel.Font = Enum.Font.SourceSansBold
+            textLabel.TextScaled = true
 
-        -- Tạo GUI đếm ngược
-        local screenGui = Instance.new("ScreenGui", player.PlayerGui)
-        screenGui.Name = "CountdownGui"
-        screenGui.IgnoreGuiInset = true
+            local button = Instance.new("TextButton", screenGui)
+            button.Size = UDim2.new(0, 150, 0, 50)
+            button.Position = UDim2.new(0.5, -75, 0.7, 0)
+            button.BackgroundColor3 = Color3.new(0, 0.5, 1)
+            button.TextColor3 = Color3.new(1, 1, 1)
+            button.Font = Enum.Font.SourceSansBold
+            button.TextScaled = true
+            button.Text = "Tiếp tục"
 
-        local textLabel = Instance.new("TextLabel", screenGui)
-        textLabel.Size = UDim2.new(0, 150, 0, 150)
-        textLabel.Position = UDim2.new(0.5, -75, 0.4, 0)
-        textLabel.BackgroundTransparency = 0.5
-        textLabel.BackgroundColor3 = Color3.new(0, 0, 0)
-        textLabel.TextColor3 = Color3.new(1, 1, 1)
-        textLabel.Font = Enum.Font.SourceSansBold
-        textLabel.TextScaled = true
+            local countdown = 5
+            local stopped = false
 
-        local button = Instance.new("TextButton", screenGui)
-        button.Size = UDim2.new(0, 150, 0, 50)
-        button.Position = UDim2.new(0.5, -75, 0.7, 0)
-        button.BackgroundColor3 = Color3.new(0, 0.5, 1)
-        button.TextColor3 = Color3.new(1, 1, 1)
-        button.Font = Enum.Font.SourceSansBold
-        button.TextScaled = true
-        button.Text = "Tiếp tục"
+            button.MouseButton1Click:Connect(function()
+                stopped = true
+                tween:Cancel()
+                screenGui:Destroy()
+                if entity.SetRunning then
+                    entity:SetRunning(true)
+                end
+                entity:Run()
+            end)
 
-        local countdown = 5
-        local stopped = false
+            while countdown > 0 and tween.PlaybackState == Enum.PlaybackState.Playing do
+                if stopped then break end
+                textLabel.Text = tostring(countdown)
+                wait(1)
+                countdown = countdown - 1
+            end
 
-        -- Nút bấm tiếp tục
-        button.MouseButton1Click:Connect(function()
-            stopped = true
-            tween:Cancel()
-            screenGui:Destroy()
+            if countdown <= 0 and not stopped then
+                screenGui:Destroy()
+                humanoid.Health = 0 -- player chết
+                if entity.Model then
+                    entity.Model:Destroy()
+                end
+            end
+        else
             if entity.SetRunning then
                 entity:SetRunning(true)
             end
             entity:Run()
-        end)
-
-        -- Đếm ngược
-        while countdown > 0 and tween.PlaybackState == Enum.PlaybackState.Playing do
-            if stopped then break end
-            textLabel.Text = tostring(countdown)
-            wait(1)
-            countdown = countdown - 1
-        end
-
-        -- Nếu hết thời gian mà không bấm nút thì player chết
-        if countdown <= 0 and not stopped then
-            screenGui:Destroy()
-            humanoid.Health = 0 -- player chết
-            if entity.Model then
-                entity.Model:Destroy() -- xóa luôn entity nếu cần
-            end
         end
     else
-        -- Nếu entity không có model, cho entity chạy luôn
+        print("Player không ẩn → entity đứng yên, không làm gì.")
         if entity.SetRunning then
-            entity:SetRunning(true)
+            entity:SetRunning(false)
         end
-        entity:Run()
     end
 end)
 
