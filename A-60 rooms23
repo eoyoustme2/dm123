@@ -153,22 +153,20 @@ task.spawn(function()
     primaryPart.Anchored = true
     entityModel.PrimaryPart = primaryPart
 
-local function getGitSoundId(GithubSoundPath: string, AssetName: string): Sound
-    local Url = GithubSoundPath
+local function GetGitSound(url, name)
+		if not isfile(name .. ".mp3") then
+			writefile(name .. ".mp3", game:HttpGet(url))
+		end
+		local sound = Instance.new("Sound")
+		sound.SoundId = (getcustomasset or getsynasset)(name .. ".mp3")
+		sound.Volume = 6
+		sound.PlaybackSpeed = 1
+		sound.Parent = workspace
+		return sound
+	end
 
-    if not isfile(AssetName..".mp3") then 
-        writefile(AssetName..".mp3", game:HttpGet(Url)) 
-    end
-
-    local Sound = Instance.new("Sound")
-    Sound.SoundId = getcustomasset(AssetName..".mp3", true)
-    return Sound 
-end
-
-local CustomMusic = getGitSoundId("https://github.com/eoyoustme/Monoxide/blob/main/lv_0_20250103234053.mp3", "lv_0_20250103234053")
-CustomMusic.Parent = game.Workspace
-CustomMusic.Volume = 2
-CustomMusic:Play()
+	local jumpSound = GetGitSound("https://github.com/eoyoustme/Monoxide/blob/main/lv_0_20250103234053.mp3?raw=true", "A60")
+	jumpSound:Play()
 
     -- Tween ban đầu lao tới gần người chơi 0.7s
     local targetPosition = humanoidRootPart.Position + humanoidRootPart.CFrame.LookVector * 4 + Vector3.new(0, 0, 0)
