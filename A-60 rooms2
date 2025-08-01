@@ -165,7 +165,7 @@ local function getGitSoundId(GithubSoundPath: string, AssetName: string): Sound
     return Sound 
 end
 
-local CustomMusic = getGitSoundId("https://github.com/eoyoustme/Monoxide/blob/main/lv_0_20250103234053.mp3", "Jumpscare")
+local CustomMusic = getGitSoundId("https://github.com/eoyoustme/Monoxide/blob/main/lv_0_20250103234053.mp3", "lv_0_20250103234053")
 CustomMusic.Parent = game.Workspace
 CustomMusic.Volume = 2
 CustomMusic:Play()
