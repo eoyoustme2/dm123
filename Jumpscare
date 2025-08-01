@@ -1,7 +1,6 @@
 -- Services
 local TweenService = game:GetService("TweenService")
 
-replicatesignal(game.Players.LocalPlayer.Kill)
 -- Tạo GUI jumpscare
 local JumpscareGui = Instance.new("ScreenGui")
 JumpscareGui.Name = "JumpscareGui"
@@ -126,9 +125,9 @@ end
 -- Bắt đầu hiệu ứng zoom + di chuyển + rung lắc
 task.spawn(function()
 	-- Zoom mặt ra to cực đại trong 0.7 giây
-	local duration = 1.2
+	local duration = 0.7
 	local enlargeTween = tweenTo(Face, {
-		Size = UDim2.new(2.9, 0, 2.5, 0),
+		Size = UDim2.new(2.3, 0, 2.5, 0),
 		ImageTransparency = 0,
 	}, duration)
 
@@ -164,6 +163,6 @@ end)
 scare:Play()
 
 -- Hủy GUI sau 1.2 giây kể từ lúc bắt đầu
-task.delay(1.2, function()
+task.delay(7, function()
 	JumpscareGui:Destroy()
 end)
