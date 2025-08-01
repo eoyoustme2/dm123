@@ -163,6 +163,6 @@ end)
 scare:Play()
 
 -- Hủy GUI sau 1.2 giây kể từ lúc bắt đầu
-task.delay(7, function()
+task.delay(0.7, function()
 	JumpscareGui:Destroy()
 end)
