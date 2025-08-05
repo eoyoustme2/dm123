@@ -244,6 +244,10 @@ local function GetGitSound(url, name)
     end
     camera.CameraType = Enum.CameraType.Custom
 
+if entityModel and entityModel.Parent then
+        entityModel:Destroy()
+    end
+
 end)
  
 end)
