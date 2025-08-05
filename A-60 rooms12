@@ -1,3 +1,13 @@
+ local function GetGitSound(GithubSnd, SoundName)
+                local url = GithubSnd
+                if not isfile(SoundName .. ".mp3") then
+                    writefile(SoundName .. ".mp3", game:HttpGet(url))
+                end
+                local sound = Instance.new("Sound")
+                sound.SoundId = (getcustomasset or getsynasset)(SoundName .. ".mp3")
+                return sound
+            end
+
 --====== Load spawner ======--
 local spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Entity%20Spawner/V2/Source.lua"))()
 
@@ -153,20 +163,10 @@ task.spawn(function()
     primaryPart.Anchored = true
     entityModel.PrimaryPart = primaryPart
 
-local function GetGitSound(url, name)
-		if not isfile(name .. ".mp3") then
-			writefile(name .. ".mp3", game:HttpGet(url))
-		end
-		local sound = Instance.new("Sound")
-		sound.SoundId = (getcustomasset or getsynasset)(name .. ".mp3")
-		sound.Volume = 6
-		sound.PlaybackSpeed = 1
-		sound.Parent = workspace
-		return sound
-	end
-
-	local jumpSound = GetGitSound("https://github.com/eoyoustme/Monoxide/blob/main/lv_0_20250103234053.mp3?raw=true", "A60")
-	jumpSound:Play()
+  local Jumpscare = GetGitSound("https://github.com/Tinkgy111/Bang/blob/main/lv_0_20250103234053.mp3?raw=true","r")
+    Jumpscare.Parent = workspace
+    Jumpscare.Volume = 5
+	Jumpscare:Play()
 
     -- Tween ban đầu lao tới gần người chơi 0.7s
     local targetPosition = humanoidRootPart.Position + humanoidRootPart.CFrame.LookVector * 4 + Vector3.new(0, 0, 0)
