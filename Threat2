@@ -29,7 +29,7 @@ local entity = spawner.Create({
 	Movement = {
 		Speed = 350,
 		Delay = 2,
-		Reversed = false
+		Reversed = true
 	},
 	Rebounding = {
 		Enabled = true,
@@ -83,7 +83,7 @@ local redTween = TweenService:Create(colorCorrection, TweenInfo.new(5), {TintCol
 redTween:Play()
 
 -- Chờ tween màu đỏ hoàn tất
-task.wait(2)
+task.wait(1)
 
 -- Danh sách các màu để đổi
 local colors = {
@@ -98,7 +98,7 @@ for _ = 1, 4 do
     for _, color in ipairs(colors) do
         local tween = TweenService:Create(colorCorrection, TweenInfo.new(0.7), {TintColor = color})
         tween:Play()
-        task.wait(0.7)
+        task.wait(0.5)
     end
 end
 
