@@ -130,10 +130,7 @@ end)
 entity:SetCallback("OnRebounding", function(startOfRebound)
     if startOfRebound == true then
         print("Entity has started rebounding")
-    else
-        print("Entity has finished rebounding")
-
-        -- Tăng tốc độ theo cấp số nhân mỗi lần rebound kết thúc
+-- Tăng tốc độ theo cấp số nhân mỗi lần rebound kết thúc
         entity.Config.Movement.Speed = entity.Config.Movement.Speed * 1.3
         print("New Speed:", entity.Config.Movement.Speed)
 
@@ -150,6 +147,9 @@ entity:SetCallback("OnRebounding", function(startOfRebound)
             TintColor = Color3.fromRGB(255, 255, 255)
         })
         TW:Play()
+    else
+        print("Entity has finished rebounding")
+
     end
 end)
 
