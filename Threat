@@ -27,7 +27,7 @@ local entity = spawner.Create({
 		Values = {4.5, 40, 0.1, 1} -- Magnitude, Roughness, FadeIn, FadeOut
 	},
 	Movement = {
-		Speed = 350,
+		Speed = 125,
 		Delay = 4,
 		Reversed = true
 	},
@@ -130,19 +130,29 @@ end)
 entity:SetCallback("OnRebounding", function(startOfRebound)
     if startOfRebound == true then
         print("Entity has started rebounding")
-	else
+    else
         print("Entity has finished rebounding")
-game.Lighting.MainColorCorrection.TintColor = Color3.fromRGB(170, 85, 0)
-game.Lighting.MainColorCorrection.Contrast = 1
-game.Lighting.MainColorCorrection.Saturation = -0.9
-local tween = game:GetService("TweenService")
-tween:Create(game.Lighting.MainColorCorrection, TweenInfo.new(2), {Contrast = 0}):Play()
-tween:Create(game.Lighting.MainColorCorrection, TweenInfo.new(2), {Saturation = 0}):Play()
-local TweenService = game:GetService("TweenService")
-local TW = TweenService:Create(game.Lighting.MainColorCorrection, TweenInfo.new(5),{TintColor = Color3.fromRGB(255, 255, 255)})
-TW:Play()
-	end
+
+        -- Tăng tốc độ theo cấp số nhân mỗi lần rebound kết thúc
+        entity.Config.Movement.Speed = entity.Config.Movement.Speed * 2
+        print("New Speed:", entity.Config.Movement.Speed)
+
+        -- Hiệu ứng ánh sáng như cũ
+        game.Lighting.MainColorCorrection.TintColor = Color3.fromRGB(170, 85, 0)
+        game.Lighting.MainColorCorrection.Contrast = 1
+        game.Lighting.MainColorCorrection.Saturation = -0.9
+
+        local tween = game:GetService("TweenService")
+        tween:Create(game.Lighting.MainColorCorrection, TweenInfo.new(2), {Contrast = 0}):Play()
+        tween:Create(game.Lighting.MainColorCorrection, TweenInfo.new(2), {Saturation = 0}):Play()
+
+        local TW = tween:Create(game.Lighting.MainColorCorrection, TweenInfo.new(5), {
+            TintColor = Color3.fromRGB(255, 255, 255)
+        })
+        TW:Play()
+    end
 end)
+
 
 entity:SetCallback("OnDespawning", function()
     print("Entity is despawning")
