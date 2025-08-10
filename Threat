@@ -308,3 +308,34 @@ end)
 ---====== Run entity ======---
 
 entity:Run()
+
+task.delay(0.4, function()
+    -- Tìm model tên "Dissolve" trong workspace
+    local entityModel = workspace:FindFirstChild("Threat")
+    
+    if entityModel and entityModel:IsA("Model") then
+        -- Tìm Part tên "DissolveNew" trong model
+        local dissolvePart = entityModel:FindFirstChild("ThreatMoving")
+        if dissolvePart and dissolvePart:IsA("BasePart") then
+            -- Tìm Attachment tên "Attachment" trong Part
+            local attachment = dissolvePart:FindFirstChild("Attachment")
+            if attachment and attachment:IsA("Attachment") then
+                -- Tìm ParticleEmitter trong Attachment
+                local particle = attachment:FindFirstChildOfClass("ParticleEmitter")
+                if particle then
+                    -- Đổi size của ParticleEmitter thành 6
+                    particle.Rate = NumberSequence.new(150)
+                    print("ParticleEmitter size set to 6")
+                else
+                    warn("Không tìm thấy ParticleEmitter trong Attachment")
+                end
+            else
+                warn("Không tìm thấy Attachment trong DissolveNew")
+            end
+        else
+            warn("Không tìm thấy Part 'DissolveNew' trong model Dissolve")
+        end
+    else
+        warn("Không tìm thấy model 'Dissolve' trong workspace")
+    end
+end)
