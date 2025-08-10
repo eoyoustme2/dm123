@@ -7,7 +7,7 @@ local spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/Regul
 local entity = spawner.Create({
 	Entity = {
 		Name = "Threat",
-		Asset = "https://github.com/localplayerr/Doors-stuff/raw/main/Mayhem%20mode%20recreate/Threat.rbxm",
+		Asset = "rbxassetid://108988008841078",
 		HeightOffset = 0
 	},
 	Lights = {
@@ -24,7 +24,7 @@ local entity = spawner.Create({
 	CameraShake = {
 		Enabled = true,
 		Range = 100,
-		Values = {1.5, 20, 0.1, 1} -- Magnitude, Roughness, FadeIn, FadeOut
+		Values = {4.5, 40, 0.1, 1} -- Magnitude, Roughness, FadeIn, FadeOut
 	},
 	Movement = {
 		Speed = 350,
@@ -36,7 +36,7 @@ local entity = spawner.Create({
 		Type = "Ambush", -- "Blitz"
 		Min = 4,
 		Max = 4,
-		Delay = 2
+		Delay = 0.2
 	},
 	Damage = {
 		Enabled = true,
