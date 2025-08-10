@@ -19,7 +19,7 @@ local entity = spawner.Create({
 		Repair = false
 	},
 	Earthquake = {
-		Enabled = true
+		Enabled = false
 	},
 	CameraShake = {
 		Enabled = true,
@@ -83,7 +83,7 @@ local redTween = TweenService:Create(colorCorrection, TweenInfo.new(5), {TintCol
 redTween:Play()
 
 -- Chờ tween màu đỏ hoàn tất
-task.wait(1)
+task.wait(0.5)
 
 -- Danh sách các màu để đổi
 local colors = {
@@ -134,7 +134,7 @@ entity:SetCallback("OnRebounding", function(startOfRebound)
         print("Entity has finished rebounding")
 
         -- Tăng tốc độ theo cấp số nhân mỗi lần rebound kết thúc
-        entity.Config.Movement.Speed = entity.Config.Movement.Speed * 10
+        entity.Config.Movement.Speed = entity.Config.Movement.Speed * 1.3
         print("New Speed:", entity.Config.Movement.Speed)
 
         -- Hiệu ứng ánh sáng như cũ
