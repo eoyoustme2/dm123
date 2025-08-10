@@ -134,7 +134,7 @@ entity:SetCallback("OnRebounding", function(startOfRebound)
         print("Entity has finished rebounding")
 
         -- Tăng tốc độ theo cấp số nhân mỗi lần rebound kết thúc
-        entity.Config.Movement.Speed = entity.Config.Movement.Speed * 1.3
+        entity.Config.Movement.Speed = entity.Config.Movement.Speed * 10
         print("New Speed:", entity.Config.Movement.Speed)
 
         -- Hiệu ứng ánh sáng như cũ
