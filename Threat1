@@ -324,7 +324,7 @@ task.delay(0.4, function()
                 local particle = attachment:FindFirstChildOfClass("ParticleEmitter")
                 if particle then
                     -- Đổi size của ParticleEmitter thành 6
-                    particle.Rate = NumberSequence.new(150)
+                    particle.Rate = 150
                     print("ParticleEmitter size set to 6")
                 else
                     warn("Không tìm thấy ParticleEmitter trong Attachment")
