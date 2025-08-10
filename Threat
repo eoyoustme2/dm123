@@ -262,7 +262,8 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
 				imageLabel.Visible = false
 			end)
 
-			task.wait(4.8)
+			task.wait(2.8)
+         firesignal(game.ReplicatedStorage.RemotesFolder.DeathHint.OnClientEvent, {"You died to who you call Threat","he will get faster every he fisnhed a rebound","Hide in a closet if he spawn."},"Blue")
 
 			to = false
 
