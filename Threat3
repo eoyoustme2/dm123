@@ -7,7 +7,7 @@ local spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/Regul
 local entity = spawner.Create({
 	Entity = {
 		Name = "Threat",
-		Asset = "rbxassetid://108988008841078",
+		Asset = "rbxassetid://119110606129787",
 		HeightOffset = 0
 	},
 	Lights = {
@@ -28,7 +28,7 @@ local entity = spawner.Create({
 	},
 	Movement = {
 		Speed = 350,
-		Delay = 2,
+		Delay = 4,
 		Reversed = true
 	},
 	Rebounding = {
@@ -94,7 +94,7 @@ local colors = {
 }
 
 -- Lặp 4 lần đổi màu
-for _ = 1, 4 do
+for _ = 1, 1 do
     for _, color in ipairs(colors) do
         local tween = TweenService:Create(colorCorrection, TweenInfo.new(0.7), {TintColor = color})
         tween:Play()
