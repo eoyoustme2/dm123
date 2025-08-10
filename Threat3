@@ -19,7 +19,7 @@ local entity = spawner.Create({
 		Repair = false
 	},
 	Earthquake = {
-		Enabled = false
+		Enabled = true
 	},
 	CameraShake = {
 		Enabled = true,
@@ -94,7 +94,7 @@ local colors = {
 }
 
 -- Lặp 4 lần đổi màu
-for _ = 1, 1 do
+for _ = 1, 2 do
     for _, color in ipairs(colors) do
         local tween = TweenService:Create(colorCorrection, TweenInfo.new(0.7), {TintColor = color})
         tween:Play()
