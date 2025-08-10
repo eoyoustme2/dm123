@@ -12,10 +12,10 @@ local entity = spawner.Create({
 	},
 	Lights = {
 		Flicker = {
-			Enabled = true,
+			Enabled = false,
 			Duration = 1
 		},
-		Shatter = true,
+		Shatter = false,
 		Repair = false
 	},
 	Earthquake = {
@@ -34,8 +34,8 @@ local entity = spawner.Create({
 	Rebounding = {
 		Enabled = true,
 		Type = "Ambush", -- "Blitz"
-		Min = 1,
-		Max = 1,
+		Min = 4,
+		Max = 4,
 		Delay = 2
 	},
 	Damage = {
@@ -83,7 +83,7 @@ local redTween = TweenService:Create(colorCorrection, TweenInfo.new(5), {TintCol
 redTween:Play()
 
 -- Chờ tween màu đỏ hoàn tất
-task.wait(5)
+task.wait(2)
 
 -- Danh sách các màu để đổi
 local colors = {
@@ -180,7 +180,7 @@ entity:SetCallback("OnDamagePlayer", function(newHealth)
 			local camera = workspace.CurrentCamera
 
 			local entityModel = workspace:WaitForChild("Threat")
-			local primaryPart = entityModel:FindFirstChild("RushNew")
+			local primaryPart = entityModel:FindFirstChild("ThreatMoving")
 
 			if not (entityModel and humanoid and humanoidRootPart and primaryPart and camera) then return end
 
